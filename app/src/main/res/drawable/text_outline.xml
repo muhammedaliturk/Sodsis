@@ -1,0 +1,21 @@
+<!-- res/drawable/text_outline.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <!-- Background color for the text -->
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Set the background color here -->
+        </shape>
+    </item>
+    <item android:right="1dp" android:top="1dp">
+        <!-- Outline color for the text -->
+        <shape android:shape="rectangle">
+            <solid android:color="#000000" /> <!-- Set the outline color here -->
+        </shape>
+    </item>
+    <item android:right="2dp" android:top="2dp">
+        <!-- Main text with a transparent background -->
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>
