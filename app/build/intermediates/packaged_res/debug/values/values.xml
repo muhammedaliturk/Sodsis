@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="brown_high">#eb8942</color>
+    <color name="brown_low">#eeb78e</color>
+    <color name="brown_mid">#e59356</color>
+    <color name="green">#00b173</color>
+    <color name="green_high">#28a428</color>
+    <color name="green_low">#99e699</color>
+    <color name="green_mid">#5bd75b</color>
+    <color name="low_black">#66000000</color>
+    <color name="weather_background">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">sodsis</string>
+    <style name="Base.Theme.Sodsis" parent="Theme.Material3.DayNight.NoActionBar">
+
+        
+        
+    </style>
+    <style name="Theme.Sodsis" parent="Base.Theme.Sodsis"/>
+</resources>

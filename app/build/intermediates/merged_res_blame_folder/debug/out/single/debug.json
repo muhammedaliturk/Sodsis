@@ -1,0 +1,290 @@
+[
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxhdpi_weather.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxhdpi\\weather.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_water_medium.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\water_medium.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_corn.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\corn.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_field1.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\field1.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\layout_fields.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\layout\\fields.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-hdpi_weather_round.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-hdpi\\weather_round.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxhdpi_weather_foreground.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxhdpi\\weather_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_menu.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable-v24\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_settings.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\settings.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_water.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\water.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_listview_bg.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\listview_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxhdpi_weather_round.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxhdpi\\weather_round.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxxhdpi_weather_foreground.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxxhdpi\\weather_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_sun.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\sun.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_sprinkler.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\sprinkler.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_water_full.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\water_full.xml"
+    },
+    {
+        "merged": "com.example.sodsis.app-merged_res-24:/drawable_weather_layout_bg.xml.flat",
+        "source": "com.example.sodsis.app-main-26:/drawable/weather_layout_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_rainy.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\rainy.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-anydpi-v26_weather.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-anydpi-v26\\weather.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_percentage.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\percentage.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-hdpi_weather_foreground.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-hdpi\\weather_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_temp.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\temp.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_celcius.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\celcius.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_top_bg.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\top_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-anydpi-v26_weather_round.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-anydpi-v26\\weather_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxxhdpi_weather.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxxhdpi\\weather.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xhdpi_weather.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xhdpi\\weather.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_weather_layout_bg.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\weather_layout_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_weather1.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\weather1.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\font_ubuntu.ttf.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\font\\ubuntu.ttf"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_snow.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\snow.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_bottom_layout_bg.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\bottom_layout_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-mdpi_weather.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-mdpi\\weather.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-hdpi_weather.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-hdpi\\weather.png"
+    },
+    {
+        "merged": "com.example.sodsis.app-merged_res-24:/layout_activity_main2.xml.flat",
+        "source": "com.example.sodsis.app-main-26:/layout/activity_main2.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\font_sans.ttf.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\font\\sans.ttf"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_text_outline.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\text_outline.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xhdpi_weather_round.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xhdpi\\weather_round.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\anim_slide_in.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\anim\\slide_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_field2.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\field2.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_add.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\add.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\font_kanit.ttf.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\font\\kanit.ttf"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_title.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\title.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_location.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\location.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_wheat.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\wheat.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-mdpi_weather_round.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-mdpi\\weather_round.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_square.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\square.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_field_btn.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\field_btn.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xhdpi_weather_foreground.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xhdpi\\weather_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_home.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\home.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxxhdpi_weather_round.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxxhdpi\\weather_round.png"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_sprinkler_.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\sprinkler_.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\drawable_water_loss.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\drawable\\water_loss.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\layout_activity_main2.xml.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\layout\\activity_main2.xml"
+    },
+    {
+        "merged": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-merged_res-24:\\mipmap-mdpi_weather_foreground.png.flat",
+        "source": "C:\\Users\\mturk\\.gradle\\daemon\\8.0\\com.example.sodsis.app-main-26:\\mipmap-mdpi\\weather_foreground.png"
+    }
+]
