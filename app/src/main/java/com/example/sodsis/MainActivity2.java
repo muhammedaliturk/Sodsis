@@ -112,6 +112,7 @@ int yarin_temp=0;
                 ImageView imageView = itemView.findViewById(R.id.imageView);
 
                 ListItem currentItem = getItem(position);
+                //deneme
 
                 if (currentItem != null) {
                     textView.setText(currentItem.getLoc());
