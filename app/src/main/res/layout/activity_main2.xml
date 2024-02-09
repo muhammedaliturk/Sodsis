@@ -156,6 +156,7 @@
                     app:layout_constraintVertical_bias="0.28" />
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/textView8"
                     android:layout_width="58sp"
                     android:gravity="center"
@@ -178,7 +179,7 @@
                     android:drawableStart="@drawable/location"
                     android:fontFamily="@font/ubuntu"
                     android:gravity="center"
-                    android:text="Kayseri, Yahyalı"
+                    android:text="Ankara"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.11"
@@ -428,7 +429,6 @@
             android:elevation="5dp"
             app:layout_constraintHorizontal_bias="0.66"
             app:layout_constraintVertical_bias="0.70"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -461,16 +461,15 @@
                     android:text="TARLALARIM"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/imageButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="230sp"
+                    android:background="@drawable/field_btn"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="17sp"
-                    android:clickable="true"
-                    android:fontFamily="@font/ubuntu"
-                    android:gravity="right"
-                    android:text="See all"
-                    android:textColor="#66000000" />
+                    app:srcCompat="@drawable/add" />
+
+
             </LinearLayout>
 
             <LinearLayout

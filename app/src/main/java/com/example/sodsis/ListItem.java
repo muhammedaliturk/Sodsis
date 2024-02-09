@@ -2,9 +2,10 @@ package com.example.sodsis;
 
 public class ListItem {
     private String loc,name,type,area,temp,hum,rain,water;
+    private int drip;
     private int imageResourceId;
 
-    public ListItem(String loc,String name,String type,String area,String temp,String hum,String rain,String water, int imageResourceId) {
+    public ListItem(String loc,String name,String type,String area,String temp,String hum,String rain,String water,int drip, int imageResourceId) {
         this.loc = loc;
         this.name=name;
         this.type=type;
@@ -13,6 +14,7 @@ public class ListItem {
         this.temp=temp;
         this.hum=hum;
         this.rain=rain;
+        this.drip=drip;
         this.imageResourceId = imageResourceId;
     }
 
@@ -39,6 +41,9 @@ public class ListItem {
     }
     public String getWater() {
         return water;
+    }
+    public int getDrip() {
+        return drip;
     }
 
     public int getImageResourceId() {
