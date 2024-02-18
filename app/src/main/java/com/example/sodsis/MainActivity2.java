@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -52,7 +51,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity2 extends AppCompatActivity {
-LinearLayout linearLayout,linearLayout2,linearLayout3;
+LinearLayout linearLayout,linearLayout2,linearLayout3,linearLayout4;
 TextView textView8,textView6,textView16,textView10,textView11,textView12,
     textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23,textView17;
 CardView cardView;
@@ -67,7 +66,9 @@ int prev_list=0;
 int buGun_temp=0;
 int yarin_temp=0;
 int tarla=0;
+int temmp;
 int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
+
     private static final String API_KEY = "ed863d88862229232e05f253083d678a";
 
     @SuppressLint("MissingInflatedId")
@@ -78,10 +79,12 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         Intent intent = getIntent();
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity2.this,R.color.green_high));
         linearLayout=findViewById(R.id.linearLayout);
+        Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
         textView9=findViewById(R.id.textView9);
         new GetWeatherTask().execute(textView9.getText().toString());
         linearLayout2=findViewById(R.id.linearLayout2);
         linearLayout3=findViewById(R.id.linearLayout3);
+        linearLayout4=findViewById(R.id.linearLayout4);
         imageButton7=findViewById(R.id.imageButton7);
         imageButton9=findViewById(R.id.imageButton9);
         weather_layout=findViewById(R.id.weather_layout);
@@ -112,10 +115,26 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         imageButton9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity2.this, MainActivity3.class);
-                startActivity(intent);
+               intent1.putExtra("came","1");
+                startActivity(intent1);
+                finish();
             }
         });
+        imageButton8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent1.putExtra("came","0");
+                intent1.putExtra("id",textView5.getText().toString());
+                intent1.putExtra("name",textView17.getText().toString());
+                intent1.putExtra("loc",textView9.getText().toString());
+                intent1.putExtra("area",textView19.getText().toString());
+                intent1.putExtra("type",textView18.getText().toString());
+                startActivity(intent1);
+                finish();
+
+            }
+        });
+
         if (intent != null) {
             Tarla1_sulama = intent.getIntExtra("tarla1_sulama",10);
             Tarla2_sulama = intent.getIntExtra("tarla2_sulama",10);
@@ -133,7 +152,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         wheat.setBounds(0, 0, wheat.getIntrinsicWidth(), wheat.getIntrinsicHeight());
         constraintLayout=findViewById(R.id.constraintLayout);
 
-        if (Integer.parseInt(textView10.getText().toString())<20){
+        if (Integer.parseInt(textView10.getText().toString())<10){
             imageButton3.setVisibility(View.VISIBLE);
             imageButton3_copy.setVisibility(View.INVISIBLE);
         }else{
@@ -167,40 +186,47 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         };
 
         // Get a reference to the ListView and set the adapter
-
-        db.collection("tarlalar")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @SuppressLint("ResourceType")
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
-                                        Objects.requireNonNull(document.getData().get("name")).toString(),
-                                        Objects.requireNonNull(document.getData().get("type")).toString(),
-                                        Objects.requireNonNull(document.getData().get("area")).toString(),"0","0","0",
-                                        Objects.requireNonNull(document.getData().get("tank")).toString(),
-                                        1,
-                                        R.drawable.field2));
-                                //Toast.makeText(getApplicationContext(), Objects.requireNonNull(document.getData().get("name")).toString(),Toast.LENGTH_SHORT).show();
-                                listView.setAdapter(adapter);
-
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        animation_in();
-                                        constraintlayout.setVisibility(View.VISIBLE);
-                                        constraintLayout.setVisibility(View.VISIBLE);
-                                    }
-                                }, 1000); // 1000 milisaniye (1 saniye) bekletme
+        if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
+            db.collection("tarlalar")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @SuppressLint("ResourceType")
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
+                                            Objects.requireNonNull(document.getData().get("name")).toString(),
+                                            Objects.requireNonNull(document.getData().get("type")).toString(),
+                                            Objects.requireNonNull(document.getData().get("area")).toString(),"0","0","0",
+                                            Objects.requireNonNull(document.getData().get("tank")).toString(),
+                                            Objects.requireNonNull(document.getId()).toString(),
+                                            1,
+                                            R.drawable.field2));
+                                    //Toast.makeText(getApplicationContext(), Objects.requireNonNull(document.getId()).toString(),Toast.LENGTH_SHORT).show();
+                                    listView.setAdapter(adapter);
 
 
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            animation_in();
+                                            constraintlayout.setVisibility(View.VISIBLE);
+                                            constraintLayout.setVisibility(View.VISIBLE);
+                                        }
+                                    }, 1000); // 1000 milisaniye (1 saniye) bekletme
+
+
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }else {
+            linearLayout4.setBackgroundResource(R.drawable.wifi);
+            constraintlayout.setVisibility(View.INVISIBLE);
+            constraintLayout.setVisibility(View.INVISIBLE);
+        }
+
 
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_full = getResources().getDrawable(R.drawable.water_full);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_medium = getResources().getDrawable(R.drawable.water_medium);
@@ -239,12 +265,16 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                 }
                 ListItem selectedFieldItem = (ListItem) listView.getItemAtPosition(i);
                 textView17.setText(selectedFieldItem.getName().toString());
+                textView17.setVisibility(View.VISIBLE);
                 textView5.setVisibility(View.INVISIBLE);
+                textView5.setText(selectedFieldItem.getId().toString());
                 prev_list=Integer.parseInt(textView10.getText().toString());
                 tarla=i;
                 textView9.setText(selectedFieldItem.getLoc());
                 new GetWeatherTask().execute(selectedFieldItem.getLoc().toString());
-                int temp=Integer.parseInt(textView10.getText().toString());
+                int temp=temmp;
+               Toast.makeText(getApplicationContext(),String.valueOf(temp),Toast.LENGTH_SHORT).show();
+               Toast.makeText(getApplicationContext(),String.valueOf(prev_list),Toast.LENGTH_SHORT).show();
                 if (temp>=10 && prev_list<10){
                     weather_animation_in();
                 }else if (temp<10 && prev_list>=10){
@@ -290,6 +320,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             public void onClick(View view) {
                 field=0;
                 textView9.setText("Ankara");
+                textView17.setVisibility(View.INVISIBLE);
                 textView5.setVisibility(View.VISIBLE);
                 prev_list=Integer.parseInt(textView10.getText().toString());
                 new GetWeatherTask().execute(textView9.getText().toString());
@@ -528,6 +559,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                     int hum=(int) main.getDouble("humidity");
                     if (rain != null) {
                         int Rain=(int) rain.getDouble("3h");
+                        temmp=temp;
                         updateNumberAnimated(temp,hum,Rain);
                     } else {
                         updateNumberAnimated(temp,hum,0);
@@ -694,5 +726,6 @@ void secenek_hazirlama(){
     textView21.setEnabled(false);
     textView22.setEnabled(false);
     textView23.setEnabled(false);
-}
+ }
+
 }

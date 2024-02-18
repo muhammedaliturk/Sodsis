@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -44,11 +46,13 @@ import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
 EditText name,area;
-TextView loc,type;
+TextView loc,type,textView26;
 Button button;
     private ArrayAdapter<String> adapter1,adapter2;
     Dialog dialog;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
     private List<String> cities = Arrays.asList("İstanbul", "Ankara", "İzmir", "Bursa", "Adana", "Antalya",
             "Konya", "Eskişehir", "Diyarbakır", "Trabzon", "Samsun", "Gaziantep", "Kayseri", "Mersin", "Kocaeli",
             "Manisa", "Balıkesir", "Aydın", "Hatay", "Malatya", "Şanlıurfa", "Denizli", "Erzurum", "Kahramanmaraş",
@@ -60,15 +64,18 @@ Button button;
     private List<String> mahsul = Arrays.asList("Mısır","Arpa","Buğday","Nohut","kabak","karpuz","elma","kiraz",
             "domates","salatalık");
     int a=0;
-    @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables"})
+    @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity3.this,R.color.white));
+        Intent intent = getIntent();
         name=findViewById(R.id.name);
         loc=findViewById(R.id.loc);
+        Intent intent1 = new Intent(MainActivity3.this, MainActivity2.class);
         type=findViewById(R.id.type);
+        textView26=findViewById(R.id.textView26);
         area=findViewById(R.id.area);
         button=findViewById(R.id.button);
         dialog = new Dialog(MainActivity3.this);
@@ -80,10 +87,45 @@ Button button;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         EditText sehir_text = dialog.findViewById(R.id.sehir_text);
         ListView listView = dialog.findViewById(R.id.listview);
-
         adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities);
         adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mahsul);
+        internet_kontrol();
+        if (intent.getStringExtra("came").toString().equals("0")){
+            textView26.setVisibility(View.VISIBLE);
+            name.setText(intent.getStringExtra("name"));
+            loc.setText(intent.getStringExtra("loc"));
+            type.setText(intent.getStringExtra("type"));
+            area.setText(intent.getStringExtra("area"));
+        }else {
+            textView26.setVisibility(View.INVISIBLE);
+        }
+        textView26.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity3.this);
+                    builder.setTitle("Silme İşlemi");
+                    builder.setMessage("Silmek istediğinize emin misiniz?");
+                    builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.collection("tarlalar").document(intent.getStringExtra("id")).delete();
+                            Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
+                            startActivity(intent1);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Silme işleminden vazgeç
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
+            }
+        });
 
 
         sehir_text.addTextChangedListener(new TextWatcher() {
@@ -190,6 +232,19 @@ Button button;
 
         adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredList);
         listView.setAdapter(adapter1);
+    }
+    @SuppressLint("SetTextI18n")
+    void internet_kontrol(){
+        if (!com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
+            name.setText("Lütfen İnternet Bağlantınızı Kontrol Edin");
+            name.setBackground(null);
+            loc.setVisibility(View.INVISIBLE);
+            area.setVisibility(View.INVISIBLE);
+            button.setClickable(false);
+            button.setVisibility(View.INVISIBLE);
+            type.setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(),"internet yok",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -69,4 +69,20 @@
         android:fontFamily="@font/ubuntu"
         android:text="KAYDET" />
 
+    <TextView
+        android:id="@+id/textView26"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150sp"
+        android:background="@color/red"
+        android:layout_marginTop="150sp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginRight="150sp"
+        android:elevation="5sp"
+        android:fontFamily="@font/ubuntu"
+        android:text="SİL" />
+
 </LinearLayout>

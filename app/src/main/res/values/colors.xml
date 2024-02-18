@@ -10,4 +10,5 @@
     <color name="green_mid">#5bd75b</color>
     <color name="green_low">#99e699</color>
     <color name="low_black">#66000000</color>
+    <color name="red">#BA0909</color>
 </resources>
