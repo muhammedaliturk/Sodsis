@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -29,8 +30,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,19 +49,18 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity2 extends AppCompatActivity {
 LinearLayout linearLayout,linearLayout2,linearLayout3;
 TextView textView8,textView6,textView16,textView10,textView11,textView12,
-    textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23;
+    textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23,textView17;
 CardView cardView;
+ImageView imageView2;
 ImageButton imageButton3,imageButton3_copy,imageButton7,imageButton8,imageButton9;
-ConstraintLayout weather_layout,constraintLayout;
-
+ConstraintLayout weather_layout,constraintLayout,constraintlayout;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference tarla1_sulama = database.getReference("tarla1").child("sulama");
-    DatabaseReference tarla2_sulama = database.getReference("tarla2").child("sulama");
-    DatabaseReference tarla3_sulama = database.getReference("tarla3").child("sulama");
 int gun =0;
 int field=0;
 int prev_list=0;
@@ -80,8 +85,10 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         imageButton7=findViewById(R.id.imageButton7);
         imageButton9=findViewById(R.id.imageButton9);
         weather_layout=findViewById(R.id.weather_layout);
+        textView17=findViewById(R.id.textView17);
         textView8=findViewById(R.id.textView8);
         textView6=findViewById(R.id.textView6);
+        constraintlayout=findViewById(R.id.constraintlayout);
         imageButton3=findViewById(R.id.imageButton3);
         imageButton3_copy=findViewById(R.id.imageButton3_copy);
         textView16=findViewById(R.id.textView16);
@@ -98,6 +105,9 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         textView23=findViewById(R.id.textView23);
         imageButton8=findViewById(R.id.imageButton8);
         textView5=findViewById(R.id.textView5);
+           secenek_hazirlama();
+        ListView listView = findViewById(R.id.listview);
+        ArrayList<ListItem> data = new ArrayList<>();
 
         imageButton9.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +132,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         corn.setBounds(0, 0, corn.getIntrinsicWidth(), corn.getIntrinsicHeight());
         wheat.setBounds(0, 0, wheat.getIntrinsicWidth(), wheat.getIntrinsicHeight());
         constraintLayout=findViewById(R.id.constraintLayout);
-        animation_in();
+
         if (Integer.parseInt(textView10.getText().toString())<20){
             imageButton3.setVisibility(View.VISIBLE);
             imageButton3_copy.setVisibility(View.INVISIBLE);
@@ -130,20 +140,18 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             imageButton3.setVisibility(View.INVISIBLE);
             imageButton3_copy.setVisibility(View.VISIBLE);
         }
-        ArrayList<ListItem> data = new ArrayList<>();
-        data.add(new ListItem("Kayseri","Tarla 1","Mısır","200","10","6","0","90",Tarla1_sulama, R.drawable.field1));
-        data.add(new ListItem("İstanbul","Tarla 2","Buğday","500","40","40","20","55",Tarla2_sulama ,R.drawable.field2));
-        data.add(new ListItem("Yahyalı","Tarla 3","Nohut","700","17","6","0","10",Tarla3_sulama ,R.drawable.field2));
+
+
 
         ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
             @NonNull
             @Override
             public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
-                android.view.View itemView = super.getView(position, convertView, parent);
+                android.view.View itemview = super.getView(position, convertView, parent);
 
-                TextView textView = itemView.findViewById(R.id.textView);
-                TextView textView1=itemView.findViewById(R.id.textView7);
-                ImageView imageView = itemView.findViewById(R.id.imageView);
+                TextView textView = itemview.findViewById(R.id.textView);
+                TextView textView1=itemview.findViewById(R.id.textView7);
+                ImageView imageView = itemview.findViewById(R.id.imageView);
 
                 ListItem currentItem = getItem(position);
                 //deneme
@@ -151,16 +159,49 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                 if (currentItem != null) {
                     textView.setText(currentItem.getLoc());
                     textView1.setText(currentItem.getName());
-                    imageView.setImageResource(currentItem.getImageResourceId());
+                    imageView.setBackgroundResource(currentItem.getImageResourceId());
                 }
 
-                return itemView;
+                return itemview;
             }
         };
 
         // Get a reference to the ListView and set the adapter
-        ListView listView = findViewById(R.id.listview);
-        listView.setAdapter(adapter);
+
+        db.collection("tarlalar")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("ResourceType")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
+                                        Objects.requireNonNull(document.getData().get("name")).toString(),
+                                        Objects.requireNonNull(document.getData().get("type")).toString(),
+                                        Objects.requireNonNull(document.getData().get("area")).toString(),"0","0","0",
+                                        Objects.requireNonNull(document.getData().get("tank")).toString(),
+                                        1,
+                                        R.drawable.field2));
+                                //Toast.makeText(getApplicationContext(), Objects.requireNonNull(document.getData().get("name")).toString(),Toast.LENGTH_SHORT).show();
+                                listView.setAdapter(adapter);
+
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        animation_in();
+                                        constraintlayout.setVisibility(View.VISIBLE);
+                                        constraintLayout.setVisibility(View.VISIBLE);
+                                    }
+                                }, 1000); // 1000 milisaniye (1 saniye) bekletme
+
+
+                            }
+                        }
+                    }
+                });
+
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_full = getResources().getDrawable(R.drawable.water_full);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_medium = getResources().getDrawable(R.drawable.water_medium);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_loss = getResources().getDrawable(R.drawable.water_loss);
@@ -169,13 +210,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
          textView20.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 if (tarla==1){
-                     tarla1_sulama.setValue("1");
-                 } else if (tarla==2) {
-                     tarla2_sulama.setValue("1");
-                 }else{
-                     tarla3_sulama.setValue("1");
-                 }
+                 database.getReference(textView17.getText().toString()).child("sulama").setValue("1");
                  weather_layout.setBackgroundResource(R.drawable.weather_layout_bg);
                  textView20.setBackground(null);
                  textView23.setBackgroundResource(R.drawable.weather_layout_bg);
@@ -184,13 +219,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
          textView23.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 if (tarla==1){
-                     tarla1_sulama.setValue("0");
-                 } else if (tarla==2) {
-                     tarla2_sulama.setValue("0");
-                 }else{
-                     tarla3_sulama.setValue("0");
-                 }
+                 database.getReference(textView17.getText().toString()).child("sulama").setValue("0");
                  weather_layout.setBackground(null);
                  textView20.setBackgroundResource(R.drawable.weather_layout_bg);
                  textView23.setBackground(null);
@@ -199,24 +228,29 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+              //  Toast.makeText(getApplicationContext(),"tıklandı",Toast.LENGTH_SHORT);
+                if (field==0){
+                    ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView4, "alpha", 1f, 0f);
+                    ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(imageButton7, "alpha", 0f, 1f);
+                    ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(linearLayout2, "translationY", 0f, 500f);
+                    ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(linearLayout2, "alpha", 1f, 0f);
+                    slideIn1.setDuration(100);slideIn3.setDuration(200);slideIn4.setDuration(200);slideIn5.setDuration(200);
+                    slideIn1.start();slideIn3.start(); slideIn4.start();slideIn5.start();
+                }
                 ListItem selectedFieldItem = (ListItem) listView.getItemAtPosition(i);
+                textView17.setText(selectedFieldItem.getName().toString());
+                textView5.setVisibility(View.INVISIBLE);
+                prev_list=Integer.parseInt(textView10.getText().toString());
                 tarla=i;
                 textView9.setText(selectedFieldItem.getLoc());
-                prev_list=Integer.parseInt(textView10.getText().toString());
                 new GetWeatherTask().execute(selectedFieldItem.getLoc().toString());
                 int temp=Integer.parseInt(textView10.getText().toString());
-                if (temp>=20 && prev_list<20){
+                if (temp>=10 && prev_list<10){
                     weather_animation_in();
-                }else if (temp<20 && prev_list>=20){
+                }else if (temp<10 && prev_list>=10){
                     weather_animation_out();
                 }
-
-                textView18.setVisibility(View.VISIBLE);
-                textView19.setVisibility(View.VISIBLE);
-                textView20.setVisibility(View.VISIBLE);
-                textView21.setVisibility(View.VISIBLE);
-                textView22.setVisibility(View.VISIBLE);
-                textView23.setVisibility(View.VISIBLE);
+                secenek_animation_in();
                 imageButton8.setVisibility(View.VISIBLE);
                 if (selectedFieldItem.getDrip()==1){
                     weather_layout.setBackgroundResource(R.drawable.weather_layout_bg);
@@ -226,16 +260,6 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                     weather_layout.setBackground(null);
                     textView20.setBackgroundResource(R.drawable.weather_layout_bg);
                     textView23.setBackground(null);
-                }
-
-                if (field==0){
-                    ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView4, "alpha", 1f, 0f);
-                    ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(textView5, "translationX", 0f, 320f);
-                    ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(imageButton7, "alpha", 0f, 1f);
-                    ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(linearLayout2, "translationY", 0f, 500f);
-                    ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(linearLayout2, "alpha", 1f, 0f);
-                    slideIn1.setDuration(100);slideIn2.setDuration(200);slideIn3.setDuration(200);slideIn4.setDuration(200);slideIn5.setDuration(200);
-                    slideIn1.start();slideIn2.start();slideIn3.start(); slideIn4.start();slideIn5.start();
                 }
                 textView21.setText(selectedFieldItem.getWater().toString().concat(" %"));
                 if (Integer.parseInt(selectedFieldItem.getWater().toString())>=60){
@@ -251,16 +275,12 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                 } else if (selectedFieldItem.getType().toString().equals("Buğday")) {
                     textView18.setCompoundDrawablesWithIntrinsicBounds(null, wheat, null, null);
                 }
+
+
                 textView19.setText(selectedFieldItem.getArea().toString().concat("m^2"));
-                field=1;
                 imageButton7.setVisibility(View.VISIBLE);
-                textView5.setTextSize(30);
-                textView5.setText(selectedFieldItem.getName());
-
-                textView5.setShadowLayer(5, 5, 5, R.color.green_high);
-
                 linearLayout.setBackgroundResource(selectedFieldItem.getImageResourceId());
-
+                field=1;
                 listView.setEnabled(false);
             }
         });
@@ -270,38 +290,32 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             public void onClick(View view) {
                 field=0;
                 textView9.setText("Ankara");
+                textView5.setVisibility(View.VISIBLE);
                 prev_list=Integer.parseInt(textView10.getText().toString());
                 new GetWeatherTask().execute(textView9.getText().toString());
                 int temp=Integer.parseInt(textView10.getText().toString());
                 linearLayout.setBackgroundResource(R.drawable.top_bg);
-                textView18.setVisibility(View.INVISIBLE);
-                textView19.setVisibility(View.INVISIBLE);
-                textView20.setVisibility(View.INVISIBLE);
-                textView21.setVisibility(View.INVISIBLE);
-                textView22.setVisibility(View.INVISIBLE);
-                textView23.setVisibility(View.INVISIBLE);
+                secenek_animation_out();
                 ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView4, "alpha", 0f, 1f);
-                ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(textView5, "translationX", 320f, 0f);
                 ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(imageButton7, "alpha", 1f, 0f);
                 ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(linearLayout2, "translationY", 500f, 0f);
                 ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(linearLayout2, "alpha", 0f, 1f);
-                slideIn1.setDuration(100);slideIn2.setDuration(200);slideIn3.setDuration(200);slideIn4.setDuration(200);slideIn5.setDuration(200);
-                slideIn1.start();slideIn2.start();slideIn3.start(); slideIn4.start();slideIn5.start();
+                slideIn1.setDuration(100);slideIn3.setDuration(200);slideIn4.setDuration(200);slideIn5.setDuration(200);
+                slideIn1.start();slideIn3.start(); slideIn4.start();slideIn5.start();
                 imageButton7.setVisibility(View.INVISIBLE);
                 imageButton8.setVisibility(View.INVISIBLE);
-                textView5.setTextSize(20);
                 textView5.setText("Muhammed Ali");
                 listView.setEnabled(true);
-                if (temp>=20 && prev_list<20){
+                if (temp>=10 && prev_list<10){
                     weather_animation_in();
-                }else if (temp<20 && prev_list>=20){
+                }else if (temp<10 && prev_list>=10){
                     weather_animation_out();
                 }
                 weather_layout.setBackground(null);
             }
         });
         textView8.setEnabled(false);
-        textView8.setOnClickListener(new View.OnClickListener() {
+       textView8.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
@@ -323,16 +337,16 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                     textView6.setLayoutParams(params2);
                     textView6.setBackground(null);
                     textView6.setTextColor(getResources().getColor(R.color.low_black));
-                    if (buGun_temp>=20 && yarin_temp<20){
+                    if (buGun_temp>=10 && yarin_temp<10){
                         weather_animation_out();
-                    } else if (buGun_temp<20 && yarin_temp>=20) {
+                    } else if (buGun_temp<10 && yarin_temp>=10) {
                         weather_animation_in();
                     }
                 }
                 gun=1;
             }
         });
-        textView6.setOnClickListener(new View.OnClickListener() {
+       textView6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (gun==1){
@@ -353,9 +367,9 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                     textView8.setLayoutParams(params2);
                     textView8.setBackground(null);
                     textView8.setTextColor(getResources().getColor(R.color.low_black));
-                    if (buGun_temp>=20 && yarin_temp<20){
+                    if (buGun_temp>=10 && yarin_temp<10){
                         weather_animation_out();
-                    } else if (buGun_temp<20 && yarin_temp>=20) {
+                    } else if (buGun_temp<10 && yarin_temp>=10) {
                         weather_animation_in();
                     }
                 }
@@ -368,7 +382,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
 
     void animation_in(){
 
-        ObjectAnimator translateYUp1 = ObjectAnimator.ofFloat(linearLayout, "translationY", -500f, 0f);
+        ObjectAnimator translateYUp1 = ObjectAnimator.ofFloat(linearLayout, "translationY", -500f, -20f);
         translateYUp1.setDuration(700);
         translateYUp1.setInterpolator(new AccelerateDecelerateInterpolator());
         AnimatorSet animatorSet = new AnimatorSet();
@@ -444,9 +458,9 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         ValueAnimator animator1 = ValueAnimator.ofInt(Integer.parseInt(textView10.getText().toString()), temp);
         @SuppressLint("Recycle") ValueAnimator animator2 = ValueAnimator.ofInt(Integer.parseInt(textView11.getText().toString()), hum);
         @SuppressLint("Recycle") ValueAnimator animator3 = ValueAnimator.ofInt(Integer.parseInt(textView12.getText().toString()), rain);
-        animator1.setDuration(500);
-        animator2.setDuration(500);
-        animator3.setDuration(500);
+        animator1.setDuration(400);
+        animator2.setDuration(400);
+        animator3.setDuration(400);
 
         animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -594,4 +608,91 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             }
         }
     }
+    void secenek_animation_in(){
+        ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView17, "alpha", 0f, 1f);
+        ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(textView18, "alpha", 0f, 1f);
+        ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(textView19, "alpha", 0f, 1f);
+        ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(textView20, "alpha", 0f, 1f);
+        ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(textView21, "alpha", 0f, 1f);
+        ObjectAnimator slideIn6 = ObjectAnimator.ofFloat(textView22, "alpha", 0f, 1f);
+        ObjectAnimator slideIn7 = ObjectAnimator.ofFloat(textView23, "alpha", 0f, 1f);
+        ObjectAnimator slideIn8 = ObjectAnimator.ofFloat(textView18, "translationY", 1000f, 0f);
+        ObjectAnimator slideIn9 = ObjectAnimator.ofFloat(textView19, "translationY", 1000f,0f);
+        ObjectAnimator slideIn10 = ObjectAnimator.ofFloat(textView20, "translationY", 1000f,0f);
+        ObjectAnimator slideIn11= ObjectAnimator.ofFloat(textView21, "translationY", 1000f, 0f);
+        ObjectAnimator slideIn12 = ObjectAnimator.ofFloat(textView22, "translationY", 1000f, 0f);
+        ObjectAnimator slideIn13 = ObjectAnimator.ofFloat(textView23, "translationY", 1000f, 0f);
+        slideIn1.setDuration(100);slideIn2.setDuration(300);slideIn3.setDuration(300);slideIn4.setDuration(500);
+        slideIn5.setDuration(400);slideIn6.setDuration(400);slideIn7.setDuration(500);
+        slideIn8.setDuration(50);slideIn9.setDuration(50);slideIn10.setDuration(50);slideIn11.setDuration(50);
+        slideIn12.setDuration(50);slideIn13.setDuration(50);
+        slideIn1.start();slideIn2.start(); slideIn3.start();slideIn4.start();
+        slideIn5.start();slideIn6.start(); slideIn7.start();
+        slideIn8.start();slideIn9.start(); slideIn10.start();slideIn11.start();
+        slideIn12.start();slideIn13.start();
+        textView18.setEnabled(true);
+        textView19.setEnabled(true);
+        textView20.setEnabled(true);
+        textView21.setEnabled(true);
+        textView22.setEnabled(true);
+        textView23.setEnabled(true);
+    }
+    void secenek_animation_out(){
+        ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView17, "alpha", 1f, 0f);
+        ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(textView18, "alpha", 1f, 0f);
+        ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(textView19, "alpha", 1f, 0f);
+        ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(textView20, "alpha", 1f, 0f);
+        ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(textView21, "alpha", 1f, 0f);
+        ObjectAnimator slideIn6 = ObjectAnimator.ofFloat(textView22, "alpha", 1f, 0f);
+        ObjectAnimator slideIn7 = ObjectAnimator.ofFloat(textView23, "alpha", 1f, 0f);
+        ObjectAnimator slideIn8 = ObjectAnimator.ofFloat(textView18, "translationY", 0f, 1000f);
+        ObjectAnimator slideIn9 = ObjectAnimator.ofFloat(textView19, "translationY", 0f, 1000f);
+        ObjectAnimator slideIn10 = ObjectAnimator.ofFloat(textView20, "translationY", 0f, 1000f);
+        ObjectAnimator slideIn11= ObjectAnimator.ofFloat(textView21, "translationY", 0f, 1000f);
+        ObjectAnimator slideIn12 = ObjectAnimator.ofFloat(textView22, "translationY", 0f, 1000f);
+        ObjectAnimator slideIn13 = ObjectAnimator.ofFloat(textView23, "translationY", 0f, 1000f);
+        slideIn1.setDuration(100);slideIn2.setDuration(100);slideIn3.setDuration(100);slideIn4.setDuration(100);
+        slideIn5.setDuration(100);slideIn6.setDuration(100);slideIn7.setDuration(100);
+        slideIn8.setDuration(50);slideIn9.setDuration(50);slideIn10.setDuration(50);slideIn11.setDuration(50);
+        slideIn12.setDuration(50);slideIn13.setDuration(50);
+        slideIn1.start();slideIn2.start(); slideIn3.start();slideIn4.start();
+        slideIn5.start();slideIn6.start(); slideIn7.start();
+        slideIn8.start();slideIn9.start(); slideIn10.start();slideIn11.start();
+        slideIn12.start();slideIn13.start();
+        textView18.setEnabled(false);
+        textView19.setEnabled(false);
+        textView20.setEnabled(false);
+        textView21.setEnabled(false);
+        textView22.setEnabled(false);
+        textView23.setEnabled(false);
+    }
+void secenek_hazirlama(){
+    ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView17, "alpha", 1f, 0f);
+    ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(textView18, "alpha", 1f, 0f);
+    ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(textView19, "alpha", 1f, 0f);
+    ObjectAnimator slideIn4 = ObjectAnimator.ofFloat(textView20, "alpha", 1f, 0f);
+    ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(textView21, "alpha", 1f, 0f);
+    ObjectAnimator slideIn6 = ObjectAnimator.ofFloat(textView22, "alpha", 1f, 0f);
+    ObjectAnimator slideIn7 = ObjectAnimator.ofFloat(textView23, "alpha", 1f, 0f);
+    ObjectAnimator slideIn8 = ObjectAnimator.ofFloat(textView18, "translationY", 0f, 1000f);
+    ObjectAnimator slideIn9 = ObjectAnimator.ofFloat(textView19, "translationY", 0f, 1000f);
+    ObjectAnimator slideIn10 = ObjectAnimator.ofFloat(textView20, "translationY", 0f, 1000f);
+    ObjectAnimator slideIn11= ObjectAnimator.ofFloat(textView21, "translationY", 0f, 1000f);
+    ObjectAnimator slideIn12 = ObjectAnimator.ofFloat(textView22, "translationY", 0f, 1000f);
+    ObjectAnimator slideIn13 = ObjectAnimator.ofFloat(textView23, "translationY", 0f, 1000f);
+    slideIn1.setDuration(50);slideIn2.setDuration(50);slideIn3.setDuration(50);slideIn4.setDuration(50);
+    slideIn5.setDuration(50);slideIn6.setDuration(50);slideIn7.setDuration(50);
+    slideIn8.setDuration(50);slideIn9.setDuration(50);slideIn10.setDuration(50);slideIn11.setDuration(50);
+    slideIn12.setDuration(50);slideIn13.setDuration(50);
+    slideIn1.start();slideIn2.start(); slideIn3.start();slideIn4.start();
+    slideIn5.start();slideIn6.start(); slideIn7.start();
+    slideIn8.start();slideIn9.start(); slideIn10.start();slideIn11.start();
+    slideIn12.start();slideIn13.start();
+    textView18.setEnabled(false);
+    textView19.setEnabled(false);
+    textView20.setEnabled(false);
+    textView21.setEnabled(false);
+    textView22.setEnabled(false);
+    textView23.setEnabled(false);
+}
 }

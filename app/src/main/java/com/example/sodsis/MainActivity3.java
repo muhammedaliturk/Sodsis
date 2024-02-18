@@ -1,20 +1,66 @@
 package com.example.sodsis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
-EditText name,loc,type,area;
+EditText name,area;
+TextView loc,type;
 Button button;
-    @SuppressLint("MissingInflatedId")
+    private ArrayAdapter<String> adapter1,adapter2;
+    Dialog dialog;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private List<String> cities = Arrays.asList("İstanbul", "Ankara", "İzmir", "Bursa", "Adana", "Antalya",
+            "Konya", "Eskişehir", "Diyarbakır", "Trabzon", "Samsun", "Gaziantep", "Kayseri", "Mersin", "Kocaeli",
+            "Manisa", "Balıkesir", "Aydın", "Hatay", "Malatya", "Şanlıurfa", "Denizli", "Erzurum", "Kahramanmaraş",
+            "Van", "Sivas", "Adıyaman", "Muğla", "Tekirdağ", "Zonguldak", "Çorum", "Aksaray", "Kırıkkale", "Isparta",
+            "Osmaniye", "Bolu", "Çanakkale", "Kütahya", "Kırşehir", "Nevşehir", "Niğde", "Ağrı", "Afyonkarahisar",
+            "Amasya", "Artvin", "Yalova", "Kastamonu", "Karabük", "Kırklareli", "Karaman", "Batman", "Şırnak",
+            "Kilis", "Bartın", "Rize", "Giresun", "Ordu", "Tunceli", "Erzincan", "Gümüşhane", "Bayburt", "Siirt",
+            "Hakkari", "Ardahan", "Iğdır");
+    private List<String> mahsul = Arrays.asList("Mısır","Arpa","Buğday","Nohut","kabak","karpuz","elma","kiraz",
+            "domates","salatalık");
+    int a=0;
+    @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +71,71 @@ Button button;
         type=findViewById(R.id.type);
         area=findViewById(R.id.area);
         button=findViewById(R.id.button);
+        dialog = new Dialog(MainActivity3.this);
+        dialog.setContentView(R.layout.filter_citys_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        EditText sehir_text = dialog.findViewById(R.id.sehir_text);
+        ListView listView = dialog.findViewById(R.id.listview);
+
+        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, cities);
+        adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mahsul);
+
+
+
+        sehir_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filter(charSequence.toString(),listView);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(a==1){
+                    loc.setText(listView.getItemAtPosition(i).toString());
+                    dialog.cancel();
+                }else {
+                    type.setText(listView.getItemAtPosition(i).toString());
+                    dialog.cancel();
+                }
+
+            }
+        });
+
+        loc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listView.setAdapter(adapter1);
+                dialog.show();
+                a=1;
+                sehir_text.setHint("Konum");
+              //  sehir_text.setText(loc.getText().toString());
+            }
+        });
+        type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listView.setAdapter(adapter2);
+                dialog.show();
+                a=2;
+                sehir_text.setHint("Ekin Türü");
+               // sehir_text.setText(loc.getText().toString());
+            }
+        });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,11 +148,48 @@ Button button;
                 } else if (area.getText().toString().isEmpty()) {
                     area.setError("Bu alan boş Bırakılamaz");
                 }else {
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("name", name.getText().toString());
+                    user.put("loc", loc.getText().toString());
+                    user.put("type", type.getText().toString());
+                    user.put("area", area.getText().toString());
+                    user.put("tank", "0");
 
+                    db.collection("tarlalar")
+                            .add(user)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Eklenmiştir",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), (CharSequence) e,Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
             }
         });
 
 
     }
+    private void filter(String text, ListView listView) {
+        List<String> filteredList = new ArrayList<>();
+
+        for (String item : cities) {
+            if (item.toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredList);
+        listView.setAdapter(adapter1);
+    }
+
 }

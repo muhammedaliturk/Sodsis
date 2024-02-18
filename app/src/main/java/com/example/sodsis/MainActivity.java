@@ -1,30 +1,30 @@
 package com.example.sodsis;
 
-import static com.example.sodsis.R.color.white;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
-import android.animation.AnimatorInflater;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+
 import android.os.Bundle;
+
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -34,6 +34,7 @@ LinearLayout top_layout;
     int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
 
 CardView cardView1,cardView2,cardView3;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference tarla1_sulama = database.getReference("tarla1").child("sulama");
     DatabaseReference tarla2_sulama = database.getReference("tarla2").child("sulama");
@@ -79,6 +80,7 @@ CardView cardView1,cardView2,cardView3;
         slideIn3.start();
     }
     void firebase_veriCekme(Intent intent){
+
         tarla1_sulama.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

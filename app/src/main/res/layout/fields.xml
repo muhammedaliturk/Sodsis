@@ -21,8 +21,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview1"
-            android:layout_width="wrap_content"
-            android:layout_height="145sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
             android:layout_marginTop="10sp"
             android:layout_marginRight="10sp"
@@ -34,9 +34,9 @@
                 android:id="@+id/imageView"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                />
 
 
         </androidx.cardview.widget.CardView>
