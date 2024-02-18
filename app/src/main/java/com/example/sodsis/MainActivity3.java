@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -51,7 +52,7 @@ Button button;
     private ArrayAdapter<String> adapter1,adapter2;
     Dialog dialog;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     private List<String> cities = Arrays.asList("İstanbul", "Ankara", "İzmir", "Bursa", "Adana", "Antalya",
             "Konya", "Eskişehir", "Diyarbakır", "Trabzon", "Samsun", "Gaziantep", "Kayseri", "Mersin", "Kocaeli",
@@ -109,6 +110,7 @@ Button button;
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             db.collection("tarlalar").document(intent.getStringExtra("id")).delete();
+                            database.getReference(intent.getStringExtra("name")).removeValue().isSuccessful();
                             Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
                             startActivity(intent1);
                             finish();

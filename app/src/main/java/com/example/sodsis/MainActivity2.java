@@ -56,7 +56,7 @@ TextView textView8,textView6,textView16,textView10,textView11,textView12,
     textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23,textView17;
 CardView cardView;
 ImageView imageView2;
-ImageButton imageButton3,imageButton3_copy,imageButton7,imageButton8,imageButton9;
+ImageButton imageButton3,imageButton3_copy,imageButton7,imageButton8,imageButton9,imageButton10;
 ConstraintLayout weather_layout,constraintLayout,constraintlayout;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -89,6 +89,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         imageButton9=findViewById(R.id.imageButton9);
         weather_layout=findViewById(R.id.weather_layout);
         textView17=findViewById(R.id.textView17);
+        imageButton10=findViewById(R.id.imageButton8_);
         textView8=findViewById(R.id.textView8);
         textView6=findViewById(R.id.textView6);
         constraintlayout=findViewById(R.id.constraintlayout);
@@ -132,6 +133,18 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                 startActivity(intent1);
                 finish();
 
+            }
+        });
+        textView22.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2=new Intent(MainActivity2.this, MainActivity4.class);
+                intent2.putExtra("id",textView5.getText().toString());
+                intent2.putExtra("name",textView17.getText().toString());
+                intent2.putExtra("loc",textView9.getText().toString());
+                intent2.putExtra("area",textView19.getText().toString());
+                intent2.putExtra("type",textView18.getText().toString());
+                startActivity(intent2);
             }
         });
 
@@ -264,8 +277,8 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
                     slideIn1.start();slideIn3.start(); slideIn4.start();slideIn5.start();
                 }
                 ListItem selectedFieldItem = (ListItem) listView.getItemAtPosition(i);
+                imageButton10.setVisibility(View.INVISIBLE);
                 textView17.setText(selectedFieldItem.getName().toString());
-                textView17.setVisibility(View.VISIBLE);
                 textView5.setVisibility(View.INVISIBLE);
                 textView5.setText(selectedFieldItem.getId().toString());
                 prev_list=Integer.parseInt(textView10.getText().toString());
@@ -320,6 +333,7 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             public void onClick(View view) {
                 field=0;
                 textView9.setText("Ankara");
+                imageButton10.setVisibility(View.VISIBLE);
                 textView17.setVisibility(View.INVISIBLE);
                 textView5.setVisibility(View.VISIBLE);
                 prev_list=Integer.parseInt(textView10.getText().toString());

@@ -92,6 +92,20 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.2"
                     app:srcCompat="@drawable/settings" />
+                <ImageButton
+                    android:id="@+id/imageButton8_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="#00000000"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.955"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.2"
+                    app:srcCompat="@drawable/person" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -420,7 +434,7 @@
             android:paddingTop="10sp"
             android:enabled="false"
             android:gravity="center"
-            android:background="@drawable/bottom_layout_bg"
+            android:background="@drawable/weather_layout_bg"
             android:fontFamily="@font/ubuntu"
             android:textColor="@color/green_high"
             app:layout_constraintBottom_toBottomOf="parent"
