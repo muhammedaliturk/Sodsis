@@ -51,13 +51,22 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity2 extends AppCompatActivity {
-LinearLayout linearLayout,linearLayout2,linearLayout3,linearLayout4;
-TextView textView8,textView6,textView16,textView10,textView11,textView12,
+    /**************************************************************
+     *                                                            *
+     *  Proje: [SODSİS]                                           *
+     *  Kodun Yazılma Tarihi: [01.02.2024]                        *
+     *  Yazan: [Muhammed Ali TÜRK]                                *
+     *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
+     *  İnstagram: [@im.aliturkk]                                 *
+     *                                                            *
+     *************************************************************/
+    LinearLayout linearLayout,linearLayout2,linearLayout3,linearLayout4;
+    TextView textView8,textView6,textView16,textView10,textView11,textView12,
     textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23,textView17;
-CardView cardView;
-ImageView imageView2;
-ImageButton imageButton3,imageButton3_copy,imageButton7,imageButton8,imageButton9,imageButton10;
-ConstraintLayout weather_layout,constraintLayout,constraintlayout;
+    CardView cardView;
+    ImageView imageView2;
+    ImageButton imageButton3,imageButton3_copy,imageButton7,imageButton8,imageButton9,imageButton10;
+    ConstraintLayout weather_layout,constraintLayout,constraintlayout;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 int gun =0;
@@ -71,32 +80,25 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
 
     private static final String API_KEY = "ed863d88862229232e05f253083d678a";
 
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Intent intent = getIntent();
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity2.this,R.color.green_high));
         linearLayout=findViewById(R.id.linearLayout);
-        Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
-        textView9=findViewById(R.id.textView9);
-        new GetWeatherTask().execute(textView9.getText().toString());
         linearLayout2=findViewById(R.id.linearLayout2);
         linearLayout3=findViewById(R.id.linearLayout3);
         linearLayout4=findViewById(R.id.linearLayout4);
-        imageButton7=findViewById(R.id.imageButton7);
-        imageButton9=findViewById(R.id.imageButton9);
         weather_layout=findViewById(R.id.weather_layout);
+        constraintlayout=findViewById(R.id.constraintlayout);
+        constraintLayout=findViewById(R.id.constraintLayout);
+        textView9=findViewById(R.id.textView9);
         textView17=findViewById(R.id.textView17);
-        imageButton10=findViewById(R.id.imageButton8_);
         textView8=findViewById(R.id.textView8);
         textView6=findViewById(R.id.textView6);
-        constraintlayout=findViewById(R.id.constraintlayout);
-        imageButton3=findViewById(R.id.imageButton3);
-        imageButton3_copy=findViewById(R.id.imageButton3_copy);
         textView16=findViewById(R.id.textView16);
-        cardView=findViewById(R.id.cardview1);
         textView10=findViewById(R.id.textView10);
         textView11=findViewById(R.id.textView11);
         textView12=findViewById(R.id.textView12);
@@ -107,11 +109,55 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
         textView21=findViewById(R.id.textView21);
         textView22=findViewById(R.id.textView22);
         textView23=findViewById(R.id.textView23);
-        imageButton8=findViewById(R.id.imageButton8);
+        imageButton7=findViewById(R.id.imageButton7);
+        imageButton9=findViewById(R.id.imageButton9);
         textView5=findViewById(R.id.textView5);
-           secenek_hazirlama();
+        imageButton8=findViewById(R.id.imageButton8);
+        imageButton10=findViewById(R.id.imageButton8_);
+        imageButton3=findViewById(R.id.imageButton3);
+        imageButton3_copy=findViewById(R.id.imageButton3_copy);
+        cardView=findViewById(R.id.cardview1);
+        Intent intent = getIntent();
+        Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
+        new GetWeatherTask().execute(textView9.getText().toString());
+        secenek_hazirlama();
         ListView listView = findViewById(R.id.listview);
         ArrayList<ListItem> data = new ArrayList<>();
+        if (intent != null) {
+            Tarla1_sulama = intent.getIntExtra("tarla1_sulama",10);
+            Tarla2_sulama = intent.getIntExtra("tarla2_sulama",10);
+            Tarla3_sulama = intent.getIntExtra("tarla3_sulama",10);
+
+        }
+        if (Integer.parseInt(textView10.getText().toString())<10){
+            imageButton3.setVisibility(View.VISIBLE);
+            imageButton3_copy.setVisibility(View.INVISIBLE);
+        }else{
+            imageButton3.setVisibility(View.INVISIBLE);
+            imageButton3_copy.setVisibility(View.VISIBLE);
+        }
+        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
+            @NonNull
+            @Override
+            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
+                android.view.View itemview = super.getView(position, convertView, parent);
+
+                TextView textView = itemview.findViewById(R.id.textView);
+                TextView textView1=itemview.findViewById(R.id.textView7);
+                ImageView imageView = itemview.findViewById(R.id.imageView);
+
+                ListItem currentItem = getItem(position);
+                //deneme
+
+                if (currentItem != null) {
+                    textView.setText(currentItem.getLoc());
+                    textView1.setText(currentItem.getName());
+                    imageView.setBackgroundResource(currentItem.getImageResourceId());
+                }
+
+                return itemview;
+            }
+        };
 
         imageButton9.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,103 +194,23 @@ int Tarla1_sulama,Tarla2_sulama,Tarla3_sulama=0;
             }
         });
 
-        if (intent != null) {
-            Tarla1_sulama = intent.getIntExtra("tarla1_sulama",10);
-            Tarla2_sulama = intent.getIntExtra("tarla2_sulama",10);
-            Tarla3_sulama = intent.getIntExtra("tarla3_sulama",10);
 
-        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         @SuppressLint("UseCompatLoadingForDrawables") Drawable corn = getResources().getDrawable(R.drawable.corn);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable wheat = getResources().getDrawable(R.drawable.wheat);
         corn.setBounds(0, 0, corn.getIntrinsicWidth(), corn.getIntrinsicHeight());
         wheat.setBounds(0, 0, wheat.getIntrinsicWidth(), wheat.getIntrinsicHeight());
-        constraintLayout=findViewById(R.id.constraintLayout);
-
-        if (Integer.parseInt(textView10.getText().toString())<10){
-            imageButton3.setVisibility(View.VISIBLE);
-            imageButton3_copy.setVisibility(View.INVISIBLE);
-        }else{
-            imageButton3.setVisibility(View.INVISIBLE);
-            imageButton3_copy.setVisibility(View.VISIBLE);
-        }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
-            @NonNull
-            @Override
-            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
-                android.view.View itemview = super.getView(position, convertView, parent);
-
-                TextView textView = itemview.findViewById(R.id.textView);
-                TextView textView1=itemview.findViewById(R.id.textView7);
-                ImageView imageView = itemview.findViewById(R.id.imageView);
-
-                ListItem currentItem = getItem(position);
-                //deneme
-
-                if (currentItem != null) {
-                    textView.setText(currentItem.getLoc());
-                    textView1.setText(currentItem.getName());
-                    imageView.setBackgroundResource(currentItem.getImageResourceId());
-                }
-
-                return itemview;
-            }
-        };
-
-        // Get a reference to the ListView and set the adapter
-        if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
-            db.collection("tarlalar")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @SuppressLint("ResourceType")
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
-                                            Objects.requireNonNull(document.getData().get("name")).toString(),
-                                            Objects.requireNonNull(document.getData().get("type")).toString(),
-                                            Objects.requireNonNull(document.getData().get("area")).toString(),"0","0","0",
-                                            Objects.requireNonNull(document.getData().get("tank")).toString(),
-                                            Objects.requireNonNull(document.getId()).toString(),
-                                            1,
-                                            R.drawable.field2));
-                                    //Toast.makeText(getApplicationContext(), Objects.requireNonNull(document.getId()).toString(),Toast.LENGTH_SHORT).show();
-                                    listView.setAdapter(adapter);
-
-
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            animation_in();
-                                            constraintlayout.setVisibility(View.VISIBLE);
-                                            constraintLayout.setVisibility(View.VISIBLE);
-                                        }
-                                    }, 1000); // 1000 milisaniye (1 saniye) bekletme
-
-
-                                }
-                            }
-                        }
-                    });
-        }else {
-            linearLayout4.setBackgroundResource(R.drawable.wifi);
-            constraintlayout.setVisibility(View.INVISIBLE);
-            constraintLayout.setVisibility(View.INVISIBLE);
-        }
+        internet(data,adapter,listView);
 
 
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_full = getResources().getDrawable(R.drawable.water_full);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_medium = getResources().getDrawable(R.drawable.water_medium);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_loss = getResources().getDrawable(R.drawable.water_loss);
-// Set the new drawable as the top drawable
+
 
          textView20.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -740,6 +706,48 @@ void secenek_hazirlama(){
     textView21.setEnabled(false);
     textView22.setEnabled(false);
     textView23.setEnabled(false);
+ }
+ void internet(ArrayList<ListItem> data,ArrayAdapter<ListItem> adapter,ListView listView){
+     if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
+         db.collection("tarlalar")
+                 .get()
+                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                     @SuppressLint("ResourceType")
+                     @Override
+                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                         if (task.isSuccessful()){
+                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                 data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
+                                         Objects.requireNonNull(document.getData().get("name")).toString(),
+                                         Objects.requireNonNull(document.getData().get("type")).toString(),
+                                         Objects.requireNonNull(document.getData().get("area")).toString(),"0","0","0",
+                                         Objects.requireNonNull(document.getData().get("tank")).toString(),
+                                         Objects.requireNonNull(document.getId()).toString(),
+                                         1,
+                                         R.drawable.field2));
+                                 //Toast.makeText(getApplicationContext(), Objects.requireNonNull(document.getId()).toString(),Toast.LENGTH_SHORT).show();
+                                 listView.setAdapter(adapter);
+
+
+                                 new Handler().postDelayed(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         animation_in();
+                                         constraintlayout.setVisibility(View.VISIBLE);
+                                         constraintLayout.setVisibility(View.VISIBLE);
+                                     }
+                                 }, 1000); // 1000 milisaniye (1 saniye) bekletme
+
+
+                             }
+                         }
+                     }
+                 });
+     }else{
+         linearLayout4.setBackgroundResource(R.drawable.wifi);
+         constraintlayout.setVisibility(View.INVISIBLE);
+         constraintLayout.setVisibility(View.INVISIBLE);
+     }
  }
 
 }

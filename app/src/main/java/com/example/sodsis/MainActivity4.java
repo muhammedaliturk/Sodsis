@@ -26,6 +26,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity4 extends AppCompatActivity {
+    /**************************************************************
+     *                                                            *
+     *  Proje: [SODSİS]                                           *
+     *  Kodun Yazılma Tarihi: [01.02.2024]                        *
+     *  Yazan: [Muhammed Ali TÜRK]                                *
+     *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
+     *  İnstagram: [@im.aliturkk]                                 *
+     *                                                            *
+     *************************************************************/
 Spinner spinner;
 TextView textView27,textView28;
 EditText textView29;

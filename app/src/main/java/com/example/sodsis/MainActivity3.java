@@ -46,6 +46,15 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
+    /**************************************************************
+     *                                                            *
+     *  Proje: [SODSİS]                                           *
+     *  Kodun Yazılma Tarihi: [01.02.2024]                        *
+     *  Yazan: [Muhammed Ali TÜRK]                                *
+     *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
+     *  İnstagram: [@im.aliturkk]                                 *
+     *                                                            *
+     *************************************************************/
 EditText name,area;
 TextView loc,type,textView26;
 Button button;
