@@ -1,3 +1,12 @@
+/**************************************************************
+ *                                                            *
+ *  Proje: [SODSİS]                                           *
+ *  Kodun Yazılma Tarihi: [01.02.2024]                        *
+ *  Yazan: [Muhammed Ali TÜRK]                                *
+ *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
+ *  İnstagram: [@im.aliturkk]                                 *
+ *                                                            *
+ *************************************************************/
 package com.example.sodsis;
 
 import androidx.annotation.NonNull;
@@ -33,8 +42,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,15 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
-    /**************************************************************
-     *                                                            *
-     *  Proje: [SODSİS]                                           *
-     *  Kodun Yazılma Tarihi: [01.02.2024]                        *
-     *  Yazan: [Muhammed Ali TÜRK]                                *
-     *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
-     *  İnstagram: [@im.aliturkk]                                 *
-     *                                                            *
-     *************************************************************/
+
 EditText name,area;
 TextView loc,type,textView26;
 Button button;
@@ -74,6 +77,7 @@ Button button;
     private List<String> mahsul = Arrays.asList("Mısır","Arpa","Buğday","Nohut","kabak","karpuz","elma","kiraz",
             "domates","salatalık");
     int a=0;
+    int b=0;
     @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,7 @@ Button button;
             loc.setText(intent.getStringExtra("loc"));
             type.setText(intent.getStringExtra("type"));
             area.setText(intent.getStringExtra("area"));
+            b=1;
         }else {
             textView26.setVisibility(View.INVISIBLE);
         }
@@ -192,41 +197,73 @@ Button button;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (name.getText().toString().isEmpty()){
-                    name.setError("Bu alan boş Bırakılamaz");
-                } else if (loc.getText().toString().isEmpty()) {
-                    loc.setError("Bu alan boş Bırakılamaz");
-                } else if (type.getText().toString().isEmpty()) {
-                    type.setError("Bu alan boş Bırakılamaz");
-                } else if (area.getText().toString().isEmpty()) {
-                    area.setError("Bu alan boş Bırakılamaz");
-                }else {
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("name", name.getText().toString());
-                    user.put("loc", loc.getText().toString());
-                    user.put("type", type.getText().toString());
-                    user.put("area", area.getText().toString());
-                    user.put("tank", "0");
+                if (b==0){
+                    if (name.getText().toString().isEmpty()){
+                        name.setError("Bu alan boş Bırakılamaz");
+                    } else if (loc.getText().toString().isEmpty()) {
+                        loc.setError("Bu alan boş Bırakılamaz");
+                    } else if (type.getText().toString().isEmpty()) {
+                        type.setError("Bu alan boş Bırakılamaz");
+                    } else if (area.getText().toString().isEmpty()) {
+                        area.setError("Bu alan boş Bırakılamaz");
+                    }else {
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("name", name.getText().toString());
+                        user.put("loc", loc.getText().toString());
+                        user.put("type", type.getText().toString());
+                        user.put("area", area.getText().toString());
+                        user.put("tank", "0");
 
-                    db.collection("tarlalar")
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Eklenmiştir",Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), (CharSequence) e,Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        db.collection("tarlalar")
+                                .add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Eklenmiştir",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getApplicationContext(), (CharSequence) e,Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                }else{
+                    if (name.getText().toString().isEmpty()){
+                        name.setError("Bu alan boş Bırakılamaz");
+                    } else if (loc.getText().toString().isEmpty()) {
+                        loc.setError("Bu alan boş Bırakılamaz");
+                    } else if (type.getText().toString().isEmpty()) {
+                        type.setError("Bu alan boş Bırakılamaz");
+                    } else if (area.getText().toString().isEmpty()) {
+                        area.setError("Bu alan boş Bırakılamaz");
+                    }else {
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("name", name.getText().toString());
+                        user.put("loc", loc.getText().toString());
+                        user.put("type", type.getText().toString());
+                        user.put("area", area.getText().toString());
+                        user.put("tank", "0");
+                        db.collection("tarlalar")
+                                .document(intent.getStringExtra("id").toString())
+                                .update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Güncellenmiştir.",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                    }
                 }
+
             }
         });
 

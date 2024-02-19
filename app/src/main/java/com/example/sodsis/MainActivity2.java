@@ -1,3 +1,12 @@
+/**************************************************************
+ *                                                            *
+ *  Proje: [SODSİS]                                           *
+ *  Kodun Yazılma Tarihi: [01.02.2024]                        *
+ *  Yazan: [Muhammed Ali TÜRK]                                *
+ *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
+ *  İnstagram: [@im.aliturkk]                                 *
+ *                                                            *
+ *************************************************************/
 package com.example.sodsis;
 
 import androidx.annotation.NonNull;
@@ -51,15 +60,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity2 extends AppCompatActivity {
-    /**************************************************************
-     *                                                            *
-     *  Proje: [SODSİS]                                           *
-     *  Kodun Yazılma Tarihi: [01.02.2024]                        *
-     *  Yazan: [Muhammed Ali TÜRK]                                *
-     *  E-posta: [ali.turk@std.yildiz.edu.tr]                     *
-     *  İnstagram: [@im.aliturkk]                                 *
-     *                                                            *
-     *************************************************************/
+
     LinearLayout linearLayout,linearLayout2,linearLayout3,linearLayout4;
     TextView textView8,textView6,textView16,textView10,textView11,textView12,
     textView4,textView5,textView9,textView19,textView18,textView20,textView21,textView22,textView23,textView17;
