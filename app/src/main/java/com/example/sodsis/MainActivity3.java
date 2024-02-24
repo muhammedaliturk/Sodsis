@@ -59,8 +59,9 @@ import java.util.Map;
 public class MainActivity3 extends AppCompatActivity {
 
 EditText name,area;
-TextView loc,type,textView26;
-Button button;
+TextView loc,type;
+Button textView26;
+Button button,button4;
     private ArrayAdapter<String> adapter1,adapter2;
     Dialog dialog;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -78,19 +79,21 @@ Button button;
             "domates","salatalık");
     int a=0;
     int b=0;
+    String user_id;
     @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity3.this,R.color.white));
+        getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity3.this,R.color.green_high));
         Intent intent = getIntent();
         name=findViewById(R.id.name);
         loc=findViewById(R.id.loc);
         Intent intent1 = new Intent(MainActivity3.this, MainActivity2.class);
         type=findViewById(R.id.type);
-        textView26=findViewById(R.id.textView26);
+        textView26=findViewById(R.id.button3);
         area=findViewById(R.id.area);
+        button4=findViewById(R.id.button4);
         button=findViewById(R.id.button);
         dialog = new Dialog(MainActivity3.this);
         dialog.setContentView(R.layout.filter_citys_dialog);
@@ -110,8 +113,10 @@ Button button;
             loc.setText(intent.getStringExtra("loc"));
             type.setText(intent.getStringExtra("type"));
             area.setText(intent.getStringExtra("area"));
+            user_id=intent.getStringExtra("user_id");
             b=1;
         }else {
+            user_id=intent.getStringExtra("user_id");
             textView26.setVisibility(View.INVISIBLE);
         }
         textView26.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +128,10 @@ Button button;
                     builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            db.collection("tarlalar").document(intent.getStringExtra("id")).delete();
+                            db.collection(user_id).document(intent.getStringExtra("id")).delete();
                             database.getReference(intent.getStringExtra("name")).removeValue().isSuccessful();
                             Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
+                            intent1.putExtra("user_id",user_id);
                             startActivity(intent1);
                             finish();
                         }
@@ -143,7 +149,14 @@ Button button;
             }
         });
 
-
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         sehir_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -213,8 +226,8 @@ Button button;
                         user.put("type", type.getText().toString());
                         user.put("area", area.getText().toString());
                         user.put("tank", "0");
-
-                        db.collection("tarlalar")
+                        database.getReference(name.getText().toString()).child("sulama").setValue("0");
+                        db.collection(user_id)
                                 .add(user)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
@@ -222,6 +235,7 @@ Button button;
                                         Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Eklenmiştir",Toast.LENGTH_SHORT).show();
                                         Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                                        intent.putExtra("user_id",user_id);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -249,7 +263,7 @@ Button button;
                         user.put("type", type.getText().toString());
                         user.put("area", area.getText().toString());
                         user.put("tank", "0");
-                        db.collection("tarlalar")
+                        db.collection(user_id)
                                 .document(intent.getStringExtra("id").toString())
                                 .update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -257,6 +271,7 @@ Button button;
                                         Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Güncellenmiştir.",Toast.LENGTH_SHORT).show();
                                         Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                                        intent.putExtra("user_id",user_id);
                                         startActivity(intent);
                                         finish();
                                     }
