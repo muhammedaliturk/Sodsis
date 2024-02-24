@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     Button giris;
     TextView signup,login,forgot_password;
     private TextView lastClickedTextView;
+    private FirebaseAuth mAuth;
 
     ProgressDialog progressDialog;
     int login_signup_situation=0;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         tel=findViewById(R.id.tel);
         signup_layout=findViewById(R.id.signup_layout);
         login_layout=findViewById(R.id.login_layout);
+        mAuth= FirebaseAuth.getInstance();
         progressDialog= new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Giriş Yapılıyor");
         if (login_kayit_cekme().toString().equals("1")){
@@ -156,7 +158,15 @@ public class MainActivity extends AppCompatActivity {
                         email_forgot_password.setError("Email is not be empty");
                         email_forgot_password.requestFocus();
                     }else {
-                        Toast.makeText(getApplicationContext(),"sifre yenile",Toast.LENGTH_SHORT).show();
+                        mAuth.sendPasswordResetEmail(email_forgot_password.getText().toString());
+                        Toast.makeText(getApplicationContext()
+                                , email_forgot_password.getText().toString()+" Mail adresine şifre yenileme bağlantısı gönderildi."
+                                , Toast.LENGTH_SHORT).show();
+                        text_reset();
+                        underlineText((TextView) login);
+                        email_login.requestFocus();
+                        login_signup_situation=0;
+                        login_animation(login_signup_situation);
                     }
 
                 }
@@ -204,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private class SignInTask extends AsyncTask<String, Void, Boolean> {
 
-        private FirebaseAuth mAuth;
+
 
         public SignInTask() {
             mAuth = FirebaseAuth.getInstance();
