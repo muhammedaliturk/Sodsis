@@ -129,7 +129,7 @@ Button button,button4;
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             db.collection(user_id).document(intent.getStringExtra("id")).delete();
-                            database.getReference(intent.getStringExtra("name")).removeValue().isSuccessful();
+                            database.getReference(user_id).child(intent.getStringExtra("name")).removeValue().isSuccessful();
                             Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
                             intent1.putExtra("user_id",user_id);
                             startActivity(intent1);
@@ -226,7 +226,7 @@ Button button,button4;
                         user.put("type", type.getText().toString());
                         user.put("area", area.getText().toString());
                         user.put("tank", "0");
-                        database.getReference(name.getText().toString()).child("sulama").setValue("0");
+                        database.getReference(user_id).child(name.getText().toString()).child("sulama").setValue("0");
                         db.collection(user_id)
                                 .add(user)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

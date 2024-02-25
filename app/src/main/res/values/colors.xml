@@ -12,4 +12,6 @@
     <color name="low_black">#66000000</color>
     <color name="red">#BA0909</color>
     <color name="bej">#f8efd6</color>
+    <color name="primaryColor">#28a428</color> <!-- Example custom color -->
+    <color name="accentColor">#00BCD4</color> <!-- Example custom color -->
 </resources>

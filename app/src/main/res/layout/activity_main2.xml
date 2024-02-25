@@ -530,7 +530,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="30sp"
                     android:layout_marginRight="30sp"
-                    android:background="@drawable/listview_bg"
                     android:divider="@null"
                     android:dividerHeight="0dp"
                     android:fadeScrollbars="false"

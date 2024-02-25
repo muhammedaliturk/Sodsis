@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         signup_layout=findViewById(R.id.signup_layout);
         login_layout=findViewById(R.id.login_layout);
         mAuth= FirebaseAuth.getInstance();
+        FirebaseAuthSettings authSettings = mAuth.getFirebaseAuthSettings();
         progressDialog= new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Giriş Yapılıyor");
         if (login_kayit_cekme().toString().equals("1")){
@@ -232,13 +234,18 @@ public class MainActivity extends AppCompatActivity {
                         // Giriş başarılı
                         FirebaseUser user = mAuth.getCurrentUser();
 
-                        if (user!=null){
+                        if (user!=null && user.isEmailVerified()){
                             intent1.putExtra("user_id",user.getUid());
                             Toast.makeText(MainActivity.this, "Giriş başarılı!", Toast.LENGTH_SHORT).show();
                             login_kayit_girme(user.getUid().toString());
                             progressDialog.cancel();
                             startActivity(intent1);
                             finish();
+                        }else {
+                            progressDialog.cancel();
+                            email_login.setError("lütfen Email hesabınızı doğrulayın");
+                            email_login.requestFocus();
+                            Toast.makeText(MainActivity.this, "lütfen Email hesabınızı doğrulayın!", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -265,6 +272,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.green_high));
+    }
+
     private void signIn(String Email, String Sifre) {
         if (Email.isEmpty()){
             progressDialog.cancel();
@@ -418,9 +432,21 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 if (mAuth.getCurrentUser()!=null && mAuth.getCurrentUser().getUid()!=null){
-                                    signUp_veri_kayit(email,password,isim,soyisim,Tel,
-                                            Objects.requireNonNull(mAuth.getCurrentUser()).getUid().toString());
-                                    Toast.makeText(MainActivity.this, "Üye olma başarılı", Toast.LENGTH_SHORT).show();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        user.sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            signUp_veri_kayit(email,password,isim,soyisim,Tel,
+                                                                    Objects.requireNonNull(mAuth.getCurrentUser()).getUid().toString());
+                                                            Toast.makeText(MainActivity.this, "Üye olma başarılı", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    }
+
                                 }
 
                             } else {
@@ -444,6 +470,7 @@ public class MainActivity extends AppCompatActivity {
         db.collection(id).document("kullanici_bilgi").set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+
                 Toast.makeText(MainActivity.this, "veriler kayıt edildi", Toast.LENGTH_SHORT).show();
                 login_animation(login_signup_situation);
             }

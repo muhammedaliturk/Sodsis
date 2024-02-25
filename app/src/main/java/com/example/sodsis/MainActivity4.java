@@ -159,26 +159,26 @@ int baslangic,bitis=0;
             @Override
             public void onClick(View view) {
                 if (a==1 && !textView28.getText().toString().equals("Başlangıç zamanı") && !textView27.getText().toString().equals("Bitiş Zamanı")){
-                    database.getReference(intent.getStringExtra("name")).child("otomasyon").setValue("1");
-                    database.getReference(intent.getStringExtra("name")).child("start_time").setValue(String.valueOf(baslangic));
-                    database.getReference(intent.getStringExtra("name")).child("finish_time").setValue(String.valueOf(bitis));
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("otomasyon").setValue("1");
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("start_time").setValue(String.valueOf(baslangic));
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("finish_time").setValue(String.valueOf(bitis));
                     if (checkBox.isChecked()){
-                        database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("1");
-                    }else  database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("0");
+                        database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("1");
+                    }else   database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("0");
 
                 } else if (a==2 && !textView29.getText().toString().equals(null)) {
-                    database.getReference(intent.getStringExtra("name")).child("otomasyon").setValue("2");
-                    database.getReference(intent.getStringExtra("name")).child("limit").setValue(textView29.getText().toString());
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("otomasyon").setValue("2");
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("limit").setValue(textView29.getText().toString());
                     if (checkBox.isChecked()){
-                        database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("1");
-                    }else  database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("0");
+                        database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("1");
+                    }else   database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("0");
                 }
                 else if (a==3 && !textView29.getText().toString().equals(null)) {
-                    database.getReference(intent.getStringExtra("name")).child("otomasyon").setValue("3");
-                    database.getReference(intent.getStringExtra("name")).child("limit").setValue(textView29.getText().toString());
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("otomasyon").setValue("3");
+                    database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("limit").setValue(textView29.getText().toString());
                     if (checkBox.isChecked()){
-                        database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("1");
-                    }else  database.getReference(intent.getStringExtra("name")).child("tekrar").setValue("0");
+                        database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("1");
+                    }else   database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("0");
                 }
                 Toast.makeText(getApplicationContext(),"verileriniz Kayıt edilmiştir",Toast.LENGTH_SHORT).show();
                // startActivity(intent2);
