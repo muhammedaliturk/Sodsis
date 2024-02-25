@@ -153,6 +153,7 @@ Button button,button4;
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
+                intent.putExtra("user_id",user_id);
                 startActivity(intent);
                 finish();
             }
@@ -233,7 +234,7 @@ Button button,button4;
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
                                         Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Eklenmiştir",Toast.LENGTH_SHORT).show();
-                                        Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
+
                                         Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
                                         intent.putExtra("user_id",user_id);
                                         startActivity(intent);
@@ -269,7 +270,6 @@ Button button,button4;
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Güncellenmiştir.",Toast.LENGTH_SHORT).show();
-                                        Toast.makeText(getApplicationContext(),"ana sayfaya yönlendiriliyorsunuz",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
                                         intent.putExtra("user_id",user_id);
                                         startActivity(intent);

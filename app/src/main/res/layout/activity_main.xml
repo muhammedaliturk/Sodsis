@@ -69,7 +69,7 @@
                 android:layout_marginLeft="30sp"
                 android:layout_marginBottom="30sp"
                 android:gravity="center"
-                android:text="Confirm your email and we'll send the instructions"/>
+                android:text="E-postanızı onaylayın, talimatları göndereceğiz"/>
             <EditText
                 android:id="@+id/email_forgot_password"
                 android:layout_width="match_parent"
@@ -226,7 +226,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40sp"
             android:fontFamily="@font/ubuntu"
-            android:text="Login"
+            android:text="Giriş"
             android:textColor="@color/green_high"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -241,7 +241,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40sp"
             android:fontFamily="@font/ubuntu"
-            android:text="Signup"
+            android:text="Üye Ol"
             android:textColor="@color/low_black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

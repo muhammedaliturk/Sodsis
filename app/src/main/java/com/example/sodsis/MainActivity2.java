@@ -166,6 +166,7 @@ public class MainActivity2 extends AppCompatActivity {
                 intent1.putExtra("came", "1");
                 intent1.putExtra("user_id", user_id);
                 startActivity(intent1);
+                finish();
             }
         });
         imageButton8.setOnClickListener(new View.OnClickListener() {
@@ -257,8 +258,7 @@ public class MainActivity2 extends AppCompatActivity {
                 textView9.setText(selectedFieldItem.getLoc());
                 new GetWeatherTask().execute(selectedFieldItem.getLoc().toString());
                 int temp = temmp;
-                Toast.makeText(getApplicationContext(), String.valueOf(temp), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(), String.valueOf(prev_list), Toast.LENGTH_SHORT).show();
+
                 if (temp >= 10 && prev_list < 10) {
                     weather_animation_in();
                 } else if (temp < 10 && prev_list >= 10) {
@@ -435,15 +435,11 @@ public class MainActivity2 extends AppCompatActivity {
             }
         };
         internet(data, adapter, listView, user_id);
-        Toast.makeText(getApplicationContext(), "onstart", Toast.LENGTH_SHORT).show();
+
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "onresume", Toast.LENGTH_SHORT).show();
-    }
+
 
     void animation_in() {
 
@@ -843,6 +839,7 @@ public class MainActivity2 extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
 
                                     if (document.getData().isEmpty() && document.getData().get("name").toString().isEmpty() && !document.exists()) {
+
                                         listView.setVisibility(View.INVISIBLE);
                                     } else {
                                         listView.setVisibility(View.VISIBLE);
@@ -870,6 +867,7 @@ public class MainActivity2 extends AppCompatActivity {
                                                                             Objects.requireNonNull(document.getId()).toString(),
                                                                             Integer.parseInt(value),
                                                                             R.drawable.field2));
+                                                                    linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
                                                                     adapter.notifyDataSetChanged();
                                                                     listView.setAdapter(adapter);
 
@@ -896,6 +894,7 @@ public class MainActivity2 extends AppCompatActivity {
                                                     Objects.requireNonNull(document.getId()).toString(),
                                                     0,
                                                     R.drawable.field2));
+                                            linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
                                             adapter.notifyDataSetChanged();
                                             listView.setAdapter(adapter);
                                             // Hata meydana geldiğinde yapılacak işlemleri buraya ekleyebilirsiniz

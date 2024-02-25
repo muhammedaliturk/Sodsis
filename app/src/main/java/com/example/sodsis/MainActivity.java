@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         progressDialog= new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Giriş Yapılıyor");
         if (login_kayit_cekme().toString().equals("1")){
-            Toast.makeText(getApplicationContext(),"giris yapilmiş",Toast.LENGTH_SHORT).show();
             Intent intent1 = new Intent(MainActivity.this, MainActivity2.class);
             intent1.putExtra("user_id",login_id_cekme().toString());
             startActivity(intent1);

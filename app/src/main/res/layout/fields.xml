@@ -59,7 +59,7 @@
             android:drawableStart="@drawable/location"
             android:fontFamily="@font/ubuntu"
             android:gravity="center"
-            android:text="location"
+            android:text="Konum"
             android:textColor="#66000000"
 
             />
