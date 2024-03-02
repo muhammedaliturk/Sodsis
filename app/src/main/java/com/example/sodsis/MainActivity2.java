@@ -96,6 +96,7 @@ public class MainActivity2 extends AppCompatActivity {
     int yarin_temp = 0;
     int tarla = 0;
     int temmp;
+    private int i=0;
     String user_id;
 
 
@@ -135,8 +136,11 @@ public class MainActivity2 extends AppCompatActivity {
         imageButton3_copy = findViewById(R.id.imageButton3_copy);
         cardView = findViewById(R.id.cardview1);
         listView = findViewById(R.id.listview);
+        Intent intent = getIntent();
+        if (intent != null) {
+            user_id = intent.getStringExtra("user_id");
 
-
+        }
     }
 
     @SuppressLint("MissingInflatedId")
@@ -166,7 +170,7 @@ public class MainActivity2 extends AppCompatActivity {
                 intent1.putExtra("came", "1");
                 intent1.putExtra("user_id", user_id);
                 startActivity(intent1);
-                finish();
+
             }
         });
         imageButton8.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +185,14 @@ public class MainActivity2 extends AppCompatActivity {
                 intent1.putExtra("type", textView18.getText().toString());
                 startActivity(intent1);
 
+            }
+        });
+        imageButton10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(MainActivity2.this, MainActivity5.class);
+                intent.putExtra("user_id",user_id);
+                startActivity(intent);
             }
         });
         textView22.setOnClickListener(new View.OnClickListener() {
@@ -210,12 +222,12 @@ public class MainActivity2 extends AppCompatActivity {
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_full = getResources().getDrawable(R.drawable.water_full);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_medium = getResources().getDrawable(R.drawable.water_medium);
         @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable_loss = getResources().getDrawable(R.drawable.water_loss);
-
+     //   Toast.makeText(getApplicationContext(),user_id,Toast.LENGTH_SHORT).show();
 
         textView20.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                database.getReference(textView17.getText().toString()).child("sulama").setValue("1");
+               database.getReference(user_id).child(textView17.getText().toString()).child("sulama").setValue("1");
                 weather_layout.setBackgroundResource(R.drawable.weather_layout_bg);
                 textView20.setBackground(null);
                 textView23.setBackgroundResource(R.drawable.weather_layout_bg);
@@ -224,7 +236,7 @@ public class MainActivity2 extends AppCompatActivity {
         textView23.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                database.getReference(textView17.getText().toString()).child("sulama").setValue("0");
+                database.getReference(user_id).child(textView17.getText().toString()).child("sulama").setValue("0");
                 weather_layout.setBackground(null);
                 textView20.setBackgroundResource(R.drawable.weather_layout_bg);
                 textView23.setBackground(null);
@@ -255,6 +267,9 @@ public class MainActivity2 extends AppCompatActivity {
                 textView5.setText(selectedFieldItem.getId().toString());
                 prev_list = Integer.parseInt(textView10.getText().toString());
                 tarla = i;
+                linearLayout2.setVisibility(View.INVISIBLE);
+                linearLayout2.setEnabled(false);
+                //listView.setEnabled(false);
                 textView9.setText(selectedFieldItem.getLoc());
                 new GetWeatherTask().execute(selectedFieldItem.getLoc().toString());
                 int temp = temmp;
@@ -304,6 +319,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 field = 0;
                 textView9.setText("Ankara");
+                listView.setVisibility(View.VISIBLE);
+                listView.setEnabled(true);
                 imageButton10.setVisibility(View.VISIBLE);
                 textView17.setVisibility(View.INVISIBLE);
                 textView5.setVisibility(View.VISIBLE);
@@ -324,6 +341,9 @@ public class MainActivity2 extends AppCompatActivity {
                 slideIn3.start();
                 slideIn4.start();
                 slideIn5.start();
+
+                linearLayout2.setEnabled(true);
+                linearLayout2.setVisibility(View.VISIBLE);
                 imageButton7.setVisibility(View.INVISIBLE);
                 imageButton8.setVisibility(View.INVISIBLE);
                 textView5.setText("Muhammed Ali");
@@ -400,16 +420,13 @@ public class MainActivity2 extends AppCompatActivity {
         });
 
 
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = getIntent();
-        if (intent != null) {
-            user_id = intent.getStringExtra("user_id");
 
-        }
         ListView listView = findViewById(R.id.listview);
         ArrayList<ListItem> data = new ArrayList<>();
 
@@ -767,7 +784,7 @@ public class MainActivity2 extends AppCompatActivity {
         slideIn13.start();
         textView18.setEnabled(false);
         textView19.setEnabled(false);
-        textView20.setEnabled(false);
+        //textView20.setEnabled(false);
         textView21.setEnabled(false);
         textView22.setEnabled(false);
         textView23.setEnabled(false);
@@ -815,7 +832,7 @@ public class MainActivity2 extends AppCompatActivity {
         slideIn13.start();
         textView18.setEnabled(false);
         textView19.setEnabled(false);
-        textView20.setEnabled(false);
+       // textView20.setEnabled(false);
         textView21.setEnabled(false);
         textView22.setEnabled(false);
         textView23.setEnabled(false);
@@ -823,13 +840,8 @@ public class MainActivity2 extends AppCompatActivity {
 
     void internet(ArrayList<ListItem> data, ArrayAdapter<ListItem> adapter, ListView listView, String User_id) {
         if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
-            db.collection(user_id).document("kullanici_id").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                }
-            });
-            db.collection(user_id)
+            db.collection(User_id)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @SuppressLint("ResourceType")
@@ -850,11 +862,9 @@ public class MainActivity2 extends AppCompatActivity {
                                                     .concat(" ").concat(Objects.requireNonNull(document.getData().get("soyisim")).toString()));
                                             if (nameObject != null) {
                                                 String name= Objects.requireNonNull(document.getData().get("name")).toString();
-                                                Object object = database.getReference(user_id)
-                                                        .child(Objects.requireNonNull(document.getData().get(name)).toString()).child("sulama");
 
                                                 database.getReference(user_id)
-                                                        .child(Objects.requireNonNull(document.getData().get(name)).toString()).child("sulama").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        .child(name).child("sulama").addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                                 String value = snapshot.getValue(String.class);
@@ -868,8 +878,8 @@ public class MainActivity2 extends AppCompatActivity {
                                                                             Integer.parseInt(value),
                                                                             R.drawable.field2));
                                                                     linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
-                                                                    adapter.notifyDataSetChanged();
                                                                     listView.setAdapter(adapter);
+                                                                    Toast.makeText(getApplicationContext(), "(CharSequence) error", Toast.LENGTH_SHORT).show();
 
                                                                 }
                                                             }
@@ -895,8 +905,8 @@ public class MainActivity2 extends AppCompatActivity {
                                                     0,
                                                     R.drawable.field2));
                                             linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
-                                            adapter.notifyDataSetChanged();
                                             listView.setAdapter(adapter);
+                                            //Toast.makeText(getApplicationContext(), "(CharSequen", Toast.LENGTH_SHORT).show();
                                             // Hata meydana geldiğinde yapılacak işlemleri buraya ekleyebilirsiniz
                                         }
 

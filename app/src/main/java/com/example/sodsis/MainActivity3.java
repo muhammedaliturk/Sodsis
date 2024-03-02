@@ -123,8 +123,8 @@ Button button,button4;
             @Override
             public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity3.this);
-                    builder.setTitle("Silme İşlemi");
-                    builder.setMessage("Silmek istediğinize emin misiniz?");
+                    builder.setTitle("Tarlayı Sil");
+                    builder.setMessage(" ' "+ name.getText().toString()+" ' "+" tarlasını silmek istediğinize emin misiniz?");
                     builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

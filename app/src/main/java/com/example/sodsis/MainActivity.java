@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView lastClickedTextView;
     private FirebaseAuth mAuth;
 
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog,progressDialog2;
     int login_signup_situation=0;
     private void init(){
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.green_high));
@@ -99,11 +99,15 @@ public class MainActivity extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         FirebaseAuthSettings authSettings = mAuth.getFirebaseAuthSettings();
         progressDialog= new ProgressDialog(MainActivity.this);
+        progressDialog2= new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Giriş Yapılıyor");
+        progressDialog2.setTitle("Hesap Oluşturuluyor");
+
         if (login_kayit_cekme().toString().equals("1")){
             Intent intent1 = new Intent(MainActivity.this, MainActivity2.class);
             intent1.putExtra("user_id",login_id_cekme().toString());
             startActivity(intent1);
+            finish();
         } else {
             mid_layout.setVisibility(View.VISIBLE);
             constraintLayout2.setVisibility(View.VISIBLE);
@@ -147,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }else if(login_signup_situation==1){
+                    progressDialog2.show();
                     signUp(email_signup.getText().toString(),
                             sifre_signup.getText().toString(),
                             isim1.getText().toString(),
@@ -469,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
         db.collection(id).document("kullanici_bilgi").set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
+                progressDialog2.cancel();
                 Toast.makeText(MainActivity.this, "veriler kayıt edildi", Toast.LENGTH_SHORT).show();
                 login_animation(login_signup_situation);
             }

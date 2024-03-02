@@ -180,7 +180,7 @@ int baslangic,bitis=0;
                         database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("1");
                     }else   database.getReference(intent.getStringExtra("user_id")).child(intent.getStringExtra("name")).child("tekrar").setValue("0");
                 }
-                Toast.makeText(getApplicationContext(),"verileriniz Kayıt edilmiştir",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Verileriniz Kaydedilmiştir",Toast.LENGTH_SHORT).show();
                // startActivity(intent2);
               //  finish();
 
