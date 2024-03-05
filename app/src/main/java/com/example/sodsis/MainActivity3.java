@@ -58,10 +58,10 @@ import java.util.Map;
 
 public class MainActivity3 extends AppCompatActivity {
 
-EditText name,area;
-TextView loc,type;
-Button textView26;
-Button button,button4;
+    EditText name,area;
+    TextView loc,type,textView27;
+    Button textView26;
+    Button button,button4;
     private ArrayAdapter<String> adapter1,adapter2;
     Dialog dialog;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -94,6 +94,7 @@ Button button,button4;
         textView26=findViewById(R.id.button3);
         area=findViewById(R.id.area);
         button4=findViewById(R.id.button4);
+        textView27=findViewById(R.id.textView26);
         button=findViewById(R.id.button);
         dialog = new Dialog(MainActivity3.this);
         dialog.setContentView(R.layout.filter_citys_dialog);
@@ -109,6 +110,7 @@ Button button,button4;
         internet_kontrol();
         if (intent.getStringExtra("came").toString().equals("0")){
             textView26.setVisibility(View.VISIBLE);
+            textView27.setText(intent.getStringExtra("name"));
             name.setText(intent.getStringExtra("name"));
             loc.setText(intent.getStringExtra("loc"));
             type.setText(intent.getStringExtra("type"));
@@ -122,29 +124,29 @@ Button button,button4;
         textView26.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity3.this);
-                    builder.setTitle("Tarlayı Sil");
-                    builder.setMessage(" ' "+ name.getText().toString()+" ' "+" tarlasını silmek istediğinize emin misiniz?");
-                    builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            db.collection(user_id).document(intent.getStringExtra("id")).delete();
-                            database.getReference(user_id).child(intent.getStringExtra("name")).removeValue().isSuccessful();
-                            Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
-                            intent1.putExtra("user_id",user_id);
-                            startActivity(intent1);
-                            finish();
-                        }
-                    });
-                    builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Silme işleminden vazgeç
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity3.this);
+                builder.setTitle("Tarlayı Sil");
+                builder.setMessage(" ' "+ name.getText().toString()+" ' "+" tarlasını silmek istediğinize emin misiniz?");
+                builder.setPositiveButton("Evet", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.collection(user_id).document(intent.getStringExtra("id")).delete();
+                        database.getReference(user_id).child(intent.getStringExtra("name")).removeValue().isSuccessful();
+                        Toast.makeText(getApplicationContext(),"Tarla verisi Silinmiştir!",Toast.LENGTH_SHORT).show();
+                        intent1.putExtra("user_id",user_id);
+                        startActivity(intent1);
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Silme işleminden vazgeç
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
             }
         });
@@ -195,7 +197,7 @@ Button button,button4;
                 dialog.show();
                 a=1;
                 sehir_text.setHint("Konum");
-              //  sehir_text.setText(loc.getText().toString());
+                //  sehir_text.setText(loc.getText().toString());
             }
         });
         type.setOnClickListener(new View.OnClickListener() {
@@ -205,7 +207,7 @@ Button button,button4;
                 dialog.show();
                 a=2;
                 sehir_text.setHint("Ekin Türü");
-               // sehir_text.setText(loc.getText().toString());
+                // sehir_text.setText(loc.getText().toString());
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -269,6 +271,8 @@ Button button,button4;
                                 .update(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
+                                        database.getReference(user_id).child(textView27.getText().toString()).removeValue();
+                                        database.getReference(user_id).child(name.getText().toString()).child("sulama").setValue("0");
                                         Toast.makeText(getApplicationContext(),name.getText().toString() + "Tarlası Güncellenmiştir.",Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(MainActivity3.this, MainActivity2.class);
                                         intent.putExtra("user_id",user_id);

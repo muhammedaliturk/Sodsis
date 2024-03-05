@@ -72,6 +72,7 @@
             android:background="@drawable/weather_layout_bg"
             android:elevation="5dp"
             android:fontFamily="@font/ubuntu"
+
             android:paddingLeft="10sp"
             android:paddingTop="8sp"
             android:text="Konum"
@@ -116,6 +117,13 @@
             android:elevation="5sp"
             android:fontFamily="@font/ubuntu"
             android:text="KAYDET" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
 
 
     </LinearLayout>

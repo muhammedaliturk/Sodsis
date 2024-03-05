@@ -9,6 +9,7 @@
  *************************************************************/
 package com.example.sodsis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -16,6 +17,7 @@ import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +29,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,10 +48,12 @@ TextView textView27,textView28;
 EditText textView29;
 CheckBox checkBox;
 Button button;
+    private static final String TAG = "MyActivity";
+String user_id;
 int a=0;
 int baslangic,bitis=0;
 
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,7 @@ int baslangic,bitis=0;
         checkBox=findViewById(R.id.checkBox);
         button=findViewById(R.id.button2);
         Intent intent = getIntent();
+        user_id=intent.getStringExtra("user_id");
         Intent intent2=new Intent(MainActivity4.this, MainActivity2.class);
         List<String> categories = new ArrayList<>();
         categories.add("OTOMASYON SEÇENEKLERİ");
@@ -101,6 +111,20 @@ int baslangic,bitis=0;
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Bir öğe seçilmediğinde yapılacak işlemleri belirleyin (opsiyonel)
+            }
+        });
+
+        db.collection(user_id).whereEqualTo("isim",false).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Toast.makeText(getApplicationContext(),document.getId().toString(),Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
             }
         });
         textView28.setOnClickListener(new View.OnClickListener() {

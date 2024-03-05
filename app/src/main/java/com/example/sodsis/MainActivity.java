@@ -541,6 +541,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         return okunan;
     }
     private String login_id_cekme(){
@@ -559,11 +560,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-
-
-
-
-
         return okunan;
     }
 

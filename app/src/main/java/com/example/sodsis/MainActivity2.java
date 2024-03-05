@@ -22,6 +22,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -33,11 +35,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,6 +59,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -66,6 +71,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -81,7 +88,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     LinearLayout linearLayout, linearLayout2, linearLayout3, linearLayout4;
     ListView listView;
-    TextView textView8, textView6, textView16, textView10, textView11, textView12,
+    TextView textView8, textView6, textView16, textView10, textView11, textView12,textView2,
             textView4, textView5, textView9, textView19, textView18, textView20, textView21, textView22, textView23, textView17;
     CardView cardView;
     ImageView imageView2;
@@ -97,8 +104,10 @@ public class MainActivity2 extends AppCompatActivity {
     int tarla = 0;
     int temmp;
     private int i=0;
-    String user_id;
-
+    String user_id,tel_onay;
+    Dialog dialog;
+    FileOutputStream outputStream3;
+    FileInputStream inputStream3;
 
     private static final String API_KEY = "ed863d88862229232e05f253083d678a";
 
@@ -113,6 +122,7 @@ public class MainActivity2 extends AppCompatActivity {
         constraintlayout = findViewById(R.id.constraintlayout);
         constraintLayout = findViewById(R.id.constraintLayout);
         textView9 = findViewById(R.id.textView9);
+        textView2=findViewById(R.id.textView2);
         textView17 = findViewById(R.id.textView17);
         textView8 = findViewById(R.id.textView8);
         textView6 = findViewById(R.id.textView6);
@@ -139,16 +149,88 @@ public class MainActivity2 extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             user_id = intent.getStringExtra("user_id");
-
         }
+        try {
+            outputStream3 = openFileOutput("tel.txt", Context.MODE_APPEND);//MODE_PRIVATE ilk önce
+            inputStream3 = openFileInput("tel.txt");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        DocumentReference docRef = db.collection(user_id).document("kullanici_bilgi");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists() && !document.get("isim").toString().isEmpty() && !document.get("soyisim").toString().isEmpty()) {
+                      textView5.setText(Objects.requireNonNull(document.getData().get("isim")).toString()
+                                                    .concat(" ").concat(Objects.requireNonNull(document.getData().get("soyisim")).toString()));
+                    } else {
+                        Toast.makeText(getApplicationContext(),"hata1",Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),"hata2",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         init();
+        ListView listView = findViewById(R.id.listview);
+        ArrayList<ListItem> data = new ArrayList<>();
+        dialog = new Dialog(MainActivity2.this);
+        dialog.setContentView(R.layout.notification);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.notification_bg));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().setGravity(Gravity.TOP);
+        TextView notif_layout = dialog.findViewById(R.id.textView33);
+        ImageButton imageButton =dialog.findViewById(R.id.imageButton);
+        notif_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(MainActivity2.this, MainActivity5.class);
+                intent.putExtra("user_id",user_id);
+                intent.putExtra("not","1");
+                startActivity(intent);
+            }
+        });
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+
+        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
+            @NonNull
+            @Override
+            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
+                android.view.View itemview = super.getView(position, convertView, parent);
+
+                TextView textView = itemview.findViewById(R.id.textView);
+                TextView textView1 = itemview.findViewById(R.id.textView7);
+                ImageView imageView = itemview.findViewById(R.id.imageView);
+
+                ListItem currentItem = getItem(position);
+
+                if (currentItem != null) {
+                    textView.setText(currentItem.getLoc());
+                    textView1.setText(currentItem.getName());
+                    imageView.setBackgroundResource(currentItem.getImageResourceId());
+                }
+
+                return itemview;
+            }
+        };
+        internet(data, adapter, listView, user_id);
 
         Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
         new GetWeatherTask().execute(textView9.getText().toString());
@@ -178,7 +260,7 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 intent1.putExtra("came", "0");
                 intent1.putExtra("user_id", user_id);
-                intent1.putExtra("id", textView5.getText().toString());
+                intent1.putExtra("id", textView2.getText().toString());
                 intent1.putExtra("name", textView17.getText().toString());
                 intent1.putExtra("loc", textView9.getText().toString());
                 intent1.putExtra("area", textView19.getText().toString());
@@ -192,6 +274,7 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent =new Intent(MainActivity2.this, MainActivity5.class);
                 intent.putExtra("user_id",user_id);
+                intent.putExtra("not","0");
                 startActivity(intent);
             }
         });
@@ -200,7 +283,7 @@ public class MainActivity2 extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent2 = new Intent(MainActivity2.this, MainActivity4.class);
                 intent2.putExtra("user_id",user_id);
-                intent2.putExtra("id", textView5.getText().toString());
+                intent2.putExtra("id", textView2.getText().toString());
                 intent2.putExtra("name", textView17.getText().toString());
                 intent2.putExtra("loc", textView9.getText().toString());
                 intent2.putExtra("area", textView19.getText().toString());
@@ -264,7 +347,7 @@ public class MainActivity2 extends AppCompatActivity {
                 imageButton10.setVisibility(View.INVISIBLE);
                 textView17.setText(selectedFieldItem.getName().toString());
                 textView5.setVisibility(View.INVISIBLE);
-                textView5.setText(selectedFieldItem.getId().toString());
+                textView2.setText(selectedFieldItem.getId().toString());
                 prev_list = Integer.parseInt(textView10.getText().toString());
                 tarla = i;
                 linearLayout2.setVisibility(View.INVISIBLE);
@@ -346,7 +429,6 @@ public class MainActivity2 extends AppCompatActivity {
                 linearLayout2.setVisibility(View.VISIBLE);
                 imageButton7.setVisibility(View.INVISIBLE);
                 imageButton8.setVisibility(View.INVISIBLE);
-                textView5.setText("Muhammed Ali");
                 listView.setEnabled(true);
                 if (temp >= 10 && prev_list < 10) {
                     weather_animation_in();
@@ -427,31 +509,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        ListView listView = findViewById(R.id.listview);
-        ArrayList<ListItem> data = new ArrayList<>();
 
-        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
-            @NonNull
-            @Override
-            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
-                android.view.View itemview = super.getView(position, convertView, parent);
-
-                TextView textView = itemview.findViewById(R.id.textView);
-                TextView textView1 = itemview.findViewById(R.id.textView7);
-                ImageView imageView = itemview.findViewById(R.id.imageView);
-
-                ListItem currentItem = getItem(position);
-
-                if (currentItem != null) {
-                    textView.setText(currentItem.getLoc());
-                    textView1.setText(currentItem.getName());
-                    imageView.setBackgroundResource(currentItem.getImageResourceId());
-                }
-
-                return itemview;
-            }
-        };
-        internet(data, adapter, listView, user_id);
 
 
     }
@@ -476,9 +534,7 @@ public class MainActivity2 extends AppCompatActivity {
         ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        /*@SuppressLint("Recycle") ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(cardView, "translationX", -500f, 0f);
-        slideIn1.setDuration(800);
-        slideIn1.start();*/
+
         @SuppressLint("Recycle") ObjectAnimator slideIn2 = ObjectAnimator.ofFloat(cardView, "alpha", 0f, 1f);
         @SuppressLint("Recycle") ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(weather_layout, "translationY", -500f, 0f);
         @SuppressLint("Recycle") ObjectAnimator slideIn5 = ObjectAnimator.ofFloat(linearLayout3, "alpha", 0f, 1f);
@@ -602,7 +658,9 @@ public class MainActivity2 extends AppCompatActivity {
         protected void onPostExecute(JSONObject json) {
             try {
                 if (json != null) {
+
                     JSONObject main = json.getJSONObject("main");
+                    Log.d("response : ", String.valueOf(main));
                     JSONObject wind = json.getJSONObject("wind");
                     JSONObject clouds = json.getJSONObject("clouds");
                     JSONObject rain = json.optJSONObject("rain");
@@ -839,6 +897,7 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     void internet(ArrayList<ListItem> data, ArrayAdapter<ListItem> adapter, ListView listView, String User_id) {
+
         if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
 
             db.collection(User_id)
@@ -858,38 +917,34 @@ public class MainActivity2 extends AppCompatActivity {
                                         Object nameObject = document.getData().get("name");
 
                                         try {
-                                            textView5.setText(Objects.requireNonNull(document.getData().get("isim")).toString()
-                                                    .concat(" ").concat(Objects.requireNonNull(document.getData().get("soyisim")).toString()));
+
                                             if (nameObject != null) {
                                                 String name= Objects.requireNonNull(document.getData().get("name")).toString();
+                                                database.getReference(user_id).child(name).child("sulama").addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        String value = snapshot.getValue(String.class);
+                                                        if (value != null) {
+                                                            data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
+                                                                    Objects.requireNonNull(document.getData().get("name")).toString(),
+                                                                    Objects.requireNonNull(document.getData().get("type")).toString(),
+                                                                    Objects.requireNonNull(document.getData().get("area")).toString(), "0", "0", "0",
+                                                                    Objects.requireNonNull(document.getData().get("tank")).toString(),
+                                                                    Objects.requireNonNull(document.getId()).toString(),
+                                                                    Integer.parseInt(value),
+                                                                    R.drawable.field2));
+                                                            linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
+                                                            listView.setAdapter(adapter);
+                                                           // Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
 
-                                                database.getReference(user_id)
-                                                        .child(name).child("sulama").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                String value = snapshot.getValue(String.class);
-                                                                if (value != null) {
-                                                                    data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
-                                                                            Objects.requireNonNull(document.getData().get("name")).toString(),
-                                                                            Objects.requireNonNull(document.getData().get("type")).toString(),
-                                                                            Objects.requireNonNull(document.getData().get("area")).toString(), "0", "0", "0",
-                                                                            Objects.requireNonNull(document.getData().get("tank")).toString(),
-                                                                            Objects.requireNonNull(document.getId()).toString(),
-                                                                            Integer.parseInt(value),
-                                                                            R.drawable.field2));
-                                                                    linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
-                                                                    listView.setAdapter(adapter);
-                                                                    Toast.makeText(getApplicationContext(), "(CharSequence) error", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
 
-                                                                }
-                                                            }
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError error) {
-                                                                Toast.makeText(getApplicationContext(), (CharSequence) error, Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-
+                                                    }
+                                                });
 
 
 
@@ -906,7 +961,7 @@ public class MainActivity2 extends AppCompatActivity {
                                                     R.drawable.field2));
                                             linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
                                             listView.setAdapter(adapter);
-                                            //Toast.makeText(getApplicationContext(), "(CharSequen", Toast.LENGTH_SHORT).show();
+
                                             // Hata meydana geldiğinde yapılacak işlemleri buraya ekleyebilirsiniz
                                         }
 
@@ -919,11 +974,14 @@ public class MainActivity2 extends AppCompatActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+                                                linearLayout4.setBackgroundResource(R.color.white);
                                                 animation_in();
                                                 constraintlayout.setVisibility(View.VISIBLE);
                                                 constraintLayout.setVisibility(View.VISIBLE);
+
+
                                             }
-                                        }, 1000); // 1000 milisaniye (1 saniye) bekletme
+                                        }, 900); // 1000 milisaniye (1 saniye) bekletme
                                     }
 
 
@@ -933,10 +991,13 @@ public class MainActivity2 extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), (CharSequence) e, Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getApplicationContext(), (CharSequence) e, Toast.LENGTH_SHORT).show();
                             animation_in();
                             constraintlayout.setVisibility(View.VISIBLE);
                             constraintLayout.setVisibility(View.VISIBLE);
+                            if (!tel_id_cekme().equals("1")){
+                                dialog.show();
+                            }
                         }
                     });
         } else {
@@ -944,6 +1005,27 @@ public class MainActivity2 extends AppCompatActivity {
             constraintlayout.setVisibility(View.INVISIBLE);
             constraintLayout.setVisibility(View.INVISIBLE);
         }
+        if (!tel_id_cekme().equals("1")){
+            dialog.show();
+        }
+    }
+    private String tel_id_cekme(){
+        int a = 65;
+        textView18.setText(Character.toString((char) a));
+
+        int x;
+        String okunan = "";
+        try {
+
+            while ((x = inputStream3.read()) != -1) {
+                okunan += Character.toString((char) x);
+            }
+            inputStream3.close();
+
+        } catch (Exception e) {
+
+        }
+        return okunan;
     }
 
 
