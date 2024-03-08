@@ -49,6 +49,9 @@ public class ListItem {
     public int getDrip() {
         return drip;
     }
+    public void setDrip(int drip) {
+        this.drip=drip;
+    }
 
     public int getImageResourceId() {
         return imageResourceId;

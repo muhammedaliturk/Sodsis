@@ -174,6 +174,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @SuppressLint({"MissingInflatedId", "UseCompatLoadingForDrawables"})
@@ -183,7 +184,6 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         init();
         ListView listView = findViewById(R.id.listview);
-        ArrayList<ListItem> data = new ArrayList<>();
         dialog = new Dialog(MainActivity2.this);
         dialog.setContentView(R.layout.notification);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.notification_bg));
@@ -193,6 +193,8 @@ public class MainActivity2 extends AppCompatActivity {
         dialog.getWindow().setGravity(Gravity.TOP);
         TextView notif_layout = dialog.findViewById(R.id.textView33);
         ImageButton imageButton =dialog.findViewById(R.id.imageButton);
+
+
         notif_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,28 +211,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
-            @NonNull
-            @Override
-            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
-                android.view.View itemview = super.getView(position, convertView, parent);
 
-                TextView textView = itemview.findViewById(R.id.textView);
-                TextView textView1 = itemview.findViewById(R.id.textView7);
-                ImageView imageView = itemview.findViewById(R.id.imageView);
-
-                ListItem currentItem = getItem(position);
-
-                if (currentItem != null) {
-                    textView.setText(currentItem.getLoc());
-                    textView1.setText(currentItem.getName());
-                    imageView.setBackgroundResource(currentItem.getImageResourceId());
-                }
-
-                return itemview;
-            }
-        };
-        internet(data, adapter, listView, user_id);
 
         Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
         new GetWeatherTask().execute(textView9.getText().toString());
@@ -329,6 +310,31 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //  Toast.makeText(getApplicationContext(),"tıklandı",Toast.LENGTH_SHORT);
+                ListItem selectedFieldItem = (ListItem) listView.getItemAtPosition(i);
+                database.getReference(user_id).child(selectedFieldItem.getName()).child("sulama").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String value = snapshot.getValue(String.class);
+                        if (value != null) {
+                            selectedFieldItem.setDrip(Integer.parseInt(value));
+                            if (selectedFieldItem.getDrip() == 1) {
+                                weather_layout.setBackgroundResource(R.drawable.weather_layout_bg);
+                                textView20.setBackground(null);
+                                textView23.setBackgroundResource(R.drawable.weather_layout_bg);
+                            } else if (selectedFieldItem.getDrip() == 0) {
+                                weather_layout.setBackground(null);
+                                textView20.setBackgroundResource(R.drawable.weather_layout_bg);
+                                textView23.setBackground(null);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 if (field == 0) {
                     ObjectAnimator slideIn1 = ObjectAnimator.ofFloat(textView4, "alpha", 1f, 0f);
                     ObjectAnimator slideIn3 = ObjectAnimator.ofFloat(imageButton7, "alpha", 0f, 1f);
@@ -343,7 +349,7 @@ public class MainActivity2 extends AppCompatActivity {
                     slideIn4.start();
                     slideIn5.start();
                 }
-                ListItem selectedFieldItem = (ListItem) listView.getItemAtPosition(i);
+
                 imageButton10.setVisibility(View.INVISIBLE);
                 textView17.setText(selectedFieldItem.getName().toString());
                 textView5.setVisibility(View.INVISIBLE);
@@ -364,15 +370,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
                 secenek_animation_in();
                 imageButton8.setVisibility(View.VISIBLE);
-                if (selectedFieldItem.getDrip() == 1) {
-                    weather_layout.setBackgroundResource(R.drawable.weather_layout_bg);
-                    textView20.setBackground(null);
-                    textView23.setBackgroundResource(R.drawable.weather_layout_bg);
-                } else if (selectedFieldItem.getDrip() == 0) {
-                    weather_layout.setBackground(null);
-                    textView20.setBackgroundResource(R.drawable.weather_layout_bg);
-                    textView23.setBackground(null);
-                }
+
                 textView21.setText(selectedFieldItem.getWater().toString().concat(" %"));
                 if (Integer.parseInt(selectedFieldItem.getWater().toString()) >= 60) {
                     textView21.setCompoundDrawablesWithIntrinsicBounds(null, drawable_full, null, null);
@@ -508,8 +506,29 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        ArrayList<ListItem> data = new ArrayList<>();
+        ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this, R.layout.fields, R.id.textView, data) {
+            @NonNull
+            @Override
+            public android.view.View getView(int position, @Nullable android.view.View convertView, @NonNull android.view.ViewGroup parent) {
+                android.view.View itemview = super.getView(position, convertView, parent);
 
+                TextView textView = itemview.findViewById(R.id.textView);
+                TextView textView1 = itemview.findViewById(R.id.textView7);
+                ImageView imageView = itemview.findViewById(R.id.imageView);
 
+                ListItem currentItem = getItem(position);
+
+                if (currentItem != null) {
+                    textView.setText(currentItem.getLoc());
+                    textView1.setText(currentItem.getName());
+                    imageView.setBackgroundResource(currentItem.getImageResourceId());
+                }
+
+                return itemview;
+            }
+        };
+        internet(data, adapter, listView, user_id);
 
 
     }
@@ -899,6 +918,8 @@ public class MainActivity2 extends AppCompatActivity {
     void internet(ArrayList<ListItem> data, ArrayAdapter<ListItem> adapter, ListView listView, String User_id) {
 
         if (com.example.sodsis.internet.internetBaglantisiVarMi(getApplicationContext())) {
+            data.clear();
+            adapter.clear();
 
             db.collection(User_id)
                     .get()
@@ -919,34 +940,17 @@ public class MainActivity2 extends AppCompatActivity {
                                         try {
 
                                             if (nameObject != null) {
-                                                String name= Objects.requireNonNull(document.getData().get("name")).toString();
-                                                database.getReference(user_id).child(name).child("sulama").addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        String value = snapshot.getValue(String.class);
-                                                        if (value != null) {
-                                                            data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
-                                                                    Objects.requireNonNull(document.getData().get("name")).toString(),
-                                                                    Objects.requireNonNull(document.getData().get("type")).toString(),
-                                                                    Objects.requireNonNull(document.getData().get("area")).toString(), "0", "0", "0",
-                                                                    Objects.requireNonNull(document.getData().get("tank")).toString(),
-                                                                    Objects.requireNonNull(document.getId()).toString(),
-                                                                    Integer.parseInt(value),
-                                                                    R.drawable.field2));
-                                                            linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
-                                                            listView.setAdapter(adapter);
-                                                           // Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-
-
+                                                data.add(new ListItem(Objects.requireNonNull(document.getData().get("loc")).toString(),
+                                                        Objects.requireNonNull(document.getData().get("name")).toString(),
+                                                        Objects.requireNonNull(document.getData().get("type")).toString(),
+                                                        Objects.requireNonNull(document.getData().get("area")).toString(), "0", "0", "0",
+                                                        Objects.requireNonNull(document.getData().get("tank")).toString(),
+                                                        Objects.requireNonNull(document.getId()).toString(),
+                                                        0,
+                                                        R.drawable.field2));
+                                                linearLayout2.setBackgroundResource(R.drawable.weather_layout_bg);
+                                                listView.setAdapter(adapter);
+                                                // Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
 
                                             }
                                         } catch (NullPointerException e) {
@@ -995,9 +999,9 @@ public class MainActivity2 extends AppCompatActivity {
                             animation_in();
                             constraintlayout.setVisibility(View.VISIBLE);
                             constraintLayout.setVisibility(View.VISIBLE);
-                            if (!tel_id_cekme().equals("1")){
+                           /* if (!tel_id_cekme().equals("1")){
                                 dialog.show();
-                            }
+                            }*/
                         }
                     });
         } else {
@@ -1005,10 +1009,11 @@ public class MainActivity2 extends AppCompatActivity {
             constraintlayout.setVisibility(View.INVISIBLE);
             constraintLayout.setVisibility(View.INVISIBLE);
         }
-        if (!tel_id_cekme().equals("1")){
+       /* if (!tel_id_cekme().equals("1")){
             dialog.show();
-        }
+        }*/
     }
+
     private String tel_id_cekme(){
         int a = 65;
         textView18.setText(Character.toString((char) a));
@@ -1026,6 +1031,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         }
         return okunan;
+    }
+    public void sulama(){
+
     }
 
 
