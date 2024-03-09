@@ -1,6 +1,2 @@
 # Sodsis
 SMART SOLAR DRIP IRRIGATION SYSTEM
-d
-
-
-
